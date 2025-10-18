@@ -10,9 +10,15 @@ config_version=5
 
 [application]
 
-config/name="across to"
+config/name="game"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
+
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+window/handheld/orientation=6
 
 [rendering]
 
