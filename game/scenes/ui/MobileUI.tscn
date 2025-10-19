@@ -14,38 +14,34 @@
 [node name="MobileUi" type="CanvasLayer"]
 script = ExtResource("1_mlxy7")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="LeftButton" type="TouchScreenButton" parent="PanelContainer"]
+[node name="LeftButton" type="TouchScreenButton" parent="."]
 position = Vector2(64, 563)
 texture_normal = ExtResource("1_cwmqd")
 texture_pressed = ExtResource("2_mlxy7")
 
-[node name="RightButton" type="TouchScreenButton" parent="PanelContainer"]
+[node name="RightButton" type="TouchScreenButton" parent="."]
 position = Vector2(204, 564)
 texture_normal = ExtResource("3_osjcv")
 texture_pressed = ExtResource("4_01wt0")
 
-[node name="JumpButton" type="TouchScreenButton" parent="PanelContainer"]
+[node name="JumpButton" type="TouchScreenButton" parent="."]
 position = Vector2(1088.9998, 617.9999)
 scale = Vector2(0.7, 0.7)
 texture_normal = ExtResource("5_0tsx2")
 texture_pressed = ExtResource("6_dlfe5")
 
-[node name="SpecialButton" type="TouchScreenButton" parent="PanelContainer"]
+[node name="SpecialButton" type="TouchScreenButton" parent="."]
 position = Vector2(1089, 522)
 scale = Vector2(0.7, 0.7)
 texture_normal = ExtResource("7_lftdj")
 texture_pressed = ExtResource("8_0itwi")
 
-[node name="AttackButton" type="TouchScreenButton" parent="PanelContainer"]
+[node name="AttackButton" type="TouchScreenButton" parent="."]
 position = Vector2(971, 564)
 texture_normal = ExtResource("7_lftdj")
 texture_pressed = ExtResource("8_0itwi")
 
-[node name="ThrowButton" type="TouchScreenButton" parent="PanelContainer"]
+[node name="ThrowButton" type="TouchScreenButton" parent="."]
 position = Vector2(991, 496)
 scale = Vector2(0.6, 0.6)
 texture_normal = ExtResource("8_0itwi")

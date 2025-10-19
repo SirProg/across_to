@@ -19,6 +19,8 @@ script = ExtResource("2_xk1c3")
 normal_projectile_scene = ExtResource("2_bisop")
 special_projectile_scene = ExtResource("3_m76yi")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_d0kx1")
 
