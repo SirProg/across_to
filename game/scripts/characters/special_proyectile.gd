@@ -7,9 +7,9 @@ extends Node2D
 var start_position: Vector2
 
 func _ready():
-	start_position = position
+    start_position = position
 
 func _process(delta):
-	position += Vector2.RIGHT * speed * delta
-	if position.distance_to(start_position) > max_distance:
-		queue_free()
+    position += Vector2.RIGHT * speed * delta
+    if position.distance_to(start_position) > max_distance:
+        queue_free()

@@ -39,6 +39,8 @@ func _ready() -> void:
     # Rotate sprite to face direction
     rotation = direction.angle()
 
+    print("💥 PROJECTILE: Created - Dir:", direction, " Speed:", speed, " Damage:", damage)
+
 
 func _physics_process(delta: float) -> void:
     position += direction * speed * delta
@@ -54,9 +56,15 @@ func _on_body_entered(body: Node2D) -> void:
     if has_hit:
         return
 
+    print("💥 PROJECTILE: Hit body -", body.name)
+
     # Check if it's the player or damageable object
     if body.has_method("take_damage"):
+        print("💥 PROJECTILE: Dealing", damage, "damage to", body.name)
         body.take_damage(damage, global_position)
+        _destroy()
+    else:
+        print("💥 PROJECTILE: Hit wall/obstacle, destroying")
         _destroy()
 
 
