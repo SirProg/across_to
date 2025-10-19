@@ -1,0 +1,71 @@
+[gd_scene load_steps=11 format=3 uid="uid://dttvhmn4q1f5a"]
+
+[ext_resource type="Texture2D" uid="uid://c4ejxsvv2bfi0" path="res://assets/sprites/ui/controlers/basic/ButtonLeft.png" id="1_cwmqd"]
+[ext_resource type="Script" uid="uid://s4ud8ecir0l0" path="res://scenes/ui/mobile_ui.gd" id="1_mlxy7"]
+[ext_resource type="Texture2D" uid="uid://cdu8l45rsk3bb" path="res://assets/sprites/ui/controlers/pressed/ButtonLeftPressed.png" id="2_mlxy7"]
+[ext_resource type="Texture2D" uid="uid://d100vhew8u1mn" path="res://assets/sprites/ui/controlers/basic/ButtonRight.png" id="3_osjcv"]
+[ext_resource type="Texture2D" uid="uid://dr5jpwfe5lcv8" path="res://assets/sprites/ui/controlers/pressed/ButtonRightPreseed.png" id="4_01wt0"]
+[ext_resource type="Texture2D" uid="uid://ccovwypocqvbv" path="res://assets/sprites/ui/controlers/basic/ButtonJump.png" id="5_0tsx2"]
+[ext_resource type="Texture2D" uid="uid://btrdhn0ysh6u5" path="res://assets/sprites/ui/controlers/pressed/ButtonJumpPreseed.png" id="6_dlfe5"]
+[ext_resource type="Texture2D" uid="uid://cgkslenkl6g81" path="res://assets/sprites/ui/controlers/basic/ButtonThrow.png" id="7_lftdj"]
+[ext_resource type="Texture2D" uid="uid://454dsmgy56fk" path="res://assets/sprites/ui/controlers/pressed/ButtonThrowPreseed.png" id="8_0itwi"]
+[ext_resource type="Texture2D" uid="uid://lyw816ldk2q7" path="res://assets/sprites/ui/profile/RectangleBox_96x96.png" id="10_osjcv"]
+
+[node name="MobileUi" type="CanvasLayer"]
+script = ExtResource("1_mlxy7")
+
+[node name="LeftButton" type="TouchScreenButton" parent="."]
+position = Vector2(64, 563)
+texture_normal = ExtResource("1_cwmqd")
+texture_pressed = ExtResource("2_mlxy7")
+
+[node name="RightButton" type="TouchScreenButton" parent="."]
+position = Vector2(204, 564)
+texture_normal = ExtResource("3_osjcv")
+texture_pressed = ExtResource("4_01wt0")
+
+[node name="JumpButton" type="TouchScreenButton" parent="."]
+position = Vector2(1088.9998, 617.9999)
+scale = Vector2(0.7, 0.7)
+texture_normal = ExtResource("5_0tsx2")
+texture_pressed = ExtResource("6_dlfe5")
+
+[node name="SpecialButton" type="TouchScreenButton" parent="."]
+position = Vector2(1089, 522)
+scale = Vector2(0.7, 0.7)
+texture_normal = ExtResource("7_lftdj")
+texture_pressed = ExtResource("8_0itwi")
+
+[node name="AttackButton" type="TouchScreenButton" parent="."]
+position = Vector2(971, 564)
+texture_normal = ExtResource("7_lftdj")
+texture_pressed = ExtResource("8_0itwi")
+
+[node name="ThrowButton" type="TouchScreenButton" parent="."]
+position = Vector2(991, 496)
+scale = Vector2(0.6, 0.6)
+texture_normal = ExtResource("8_0itwi")
+texture_pressed = ExtResource("8_0itwi")
+
+[node name="PlayerDetails" type="CanvasLayer" parent="."]
+
+[node name="PanelContainer" type="PanelContainer" parent="PlayerDetails"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PlayerDetails/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="PlayerDetails/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="PlayerDetails/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PlayerDetails/PanelContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+texture = ExtResource("10_osjcv")

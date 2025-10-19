@@ -1,0 +1,78 @@
+[gd_scene load_steps=14 format=3 uid="uid://cyaxc764ehe4w"]
+
+[ext_resource type="Script" uid="uid://djfxjn2ao8xj8" path="res://scripts/systems/ui/mobile_comtrols.gd" id="1_1ycnm"]
+[ext_resource type="Texture2D" uid="uid://d100vhew8u1mn" path="res://assets/sprites/ui/controlers/basic/ButtonRight.png" id="1_vgxx8"]
+[ext_resource type="Texture2D" uid="uid://dr5jpwfe5lcv8" path="res://assets/sprites/ui/controlers/pressed/ButtonRightPreseed.png" id="2_1ycnm"]
+[ext_resource type="Texture2D" uid="uid://c4ejxsvv2bfi0" path="res://assets/sprites/ui/controlers/basic/ButtonLeft.png" id="3_eaxl8"]
+[ext_resource type="Texture2D" uid="uid://cdu8l45rsk3bb" path="res://assets/sprites/ui/controlers/pressed/ButtonLeftPressed.png" id="4_6ea1j"]
+[ext_resource type="Texture2D" uid="uid://ccovwypocqvbv" path="res://assets/sprites/ui/controlers/basic/ButtonJump.png" id="5_rok10"]
+[ext_resource type="Texture2D" uid="uid://btrdhn0ysh6u5" path="res://assets/sprites/ui/controlers/pressed/ButtonJumpPreseed.png" id="6_n5eeb"]
+[ext_resource type="Texture2D" uid="uid://cgkslenkl6g81" path="res://assets/sprites/ui/controlers/basic/ButtonThrow.png" id="7_gilpd"]
+[ext_resource type="Texture2D" uid="uid://454dsmgy56fk" path="res://assets/sprites/ui/controlers/pressed/ButtonThrowPreseed.png" id="8_dji21"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tdtpw"]
+radius = 50.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ia2d0"]
+radius = 50.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_07bov"]
+radius = 50.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jkbdd"]
+radius = 50.0
+
+[node name="MobileControls" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("1_1ycnm")
+
+[node name="RightButton" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(246, 450)
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("1_vgxx8")
+texture_pressed = ExtResource("2_1ycnm")
+shape = SubResource("CircleShape2D_tdtpw")
+action = "ui_right"
+
+[node name="LeftButton" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(48, 450)
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("3_eaxl8")
+texture_pressed = ExtResource("4_6ea1j")
+shape = SubResource("CircleShape2D_ia2d0")
+action = "ui_left"
+
+[node name="JumpButton" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(1019, 536.00006)
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("5_rok10")
+texture_pressed = ExtResource("6_n5eeb")
+shape = SubResource("CircleShape2D_07bov")
+
+[node name="ThrowButton" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(893.99994, 347)
+scale = Vector2(0.9, 0.9)
+texture_normal = ExtResource("7_gilpd")
+texture_pressed = ExtResource("8_dji21")
+shape = SubResource("CircleShape2D_jkbdd")
+
+[node name="AttactButton" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(861.00006, 449.99997)
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("7_gilpd")
+texture_pressed = ExtResource("8_dji21")
+shape = SubResource("CircleShape2D_jkbdd")
+
+[node name="SpecialButton" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2(1019, 415.00006)
+scale = Vector2(0.80999994, 0.80999994)
+texture_normal = ExtResource("7_gilpd")
+texture_pressed = ExtResource("8_dji21")
+shape = SubResource("CircleShape2D_jkbdd")

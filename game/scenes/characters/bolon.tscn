@@ -1,0 +1,40 @@
+[gd_scene load_steps=8 format=3 uid="uid://lbyi6msheabi"]
+
+[ext_resource type="Texture2D" uid="uid://d05eoisq107ce" path="res://assets/sprites/characters/main/character.png" id="1_d0kx1"]
+[ext_resource type="PackedScene" uid="uid://cj6tw5vjgpb21" path="res://scenes/items/proyectiles/main_character/NormalProyectile.tscn" id="2_bisop"]
+[ext_resource type="Script" uid="uid://bt7frq0v3urv" path="res://scripts/characters/bolon_player.gd" id="2_xk1c3"]
+[ext_resource type="PackedScene" uid="uid://dhqjf7oip84jw" path="res://scenes/items/proyectiles/main_character/SpecialProyectile.tscn" id="3_m76yi"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bisop"]
+radius = 37.01351
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m76yi"]
+radius = 39.45884
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q1h08"]
+size = Vector2(63, 70)
+
+[node name="Bolon" type="CharacterBody2D"]
+script = ExtResource("2_xk1c3")
+normal_projectile_scene = ExtResource("2_bisop")
+special_projectile_scene = ExtResource("3_m76yi")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_d0kx1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bisop")
+
+[node name="PickupDetector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupDetector"]
+shape = SubResource("CircleShape2D_m76yi")
+
+[node name="MeleeHitbox" type="Area2D" parent="."]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeHitbox"]
+position = Vector2(44.5, 0)
+shape = SubResource("RectangleShape2D_q1h08")
