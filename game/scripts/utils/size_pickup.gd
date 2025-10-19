@@ -1,7 +1,6 @@
 extends Area2D
 
-func _ready():
-	add_to_group("size_pickup")
-	# Auto-destrucción después de 15s
-	await get_tree().create_timer(15.0).timeout
+func _on_body_entered(body: Node2D) -> void:
+	body._on_PickupDetector_area_entered()
 	queue_free()
+	pass # Replace with function body.

@@ -1,0 +1,83 @@
+[gd_scene load_steps=7 format=3 uid="uid://ds3mebeu2yhwa"]
+
+[ext_resource type="Script" uid="uid://blhfbuqkof1n8" path="res://scripts/systems/ui/main_menu.gd" id="1_2ysvc"]
+[ext_resource type="Texture2D" uid="uid://xn4j7krtxsrp" path="res://assets/sprites/7.png" id="2_xpiny"]
+[ext_resource type="FontFile" uid="uid://dpr7rq0bm6vh8" path="res://assets/fonts/Beholden-Medium.ttf" id="3_bhu4a"]
+[ext_resource type="Texture2D" uid="uid://lyw816ldk2q7" path="res://assets/sprites/ui/profile/RectangleBox_96x96.png" id="4_e2per"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7mi0g"]
+font = ExtResource("3_bhu4a")
+font_size = 60
+font_color = Color(0.14985755, 0.035437085, 0.22362548, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nqjyj"]
+texture = ExtResource("4_e2per")
+texture_margin_left = 20.0
+texture_margin_top = 15.0
+texture_margin_right = 20.0
+texture_margin_bottom = 15.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2ysvc")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1281.0
+offset_bottom = 722.0
+texture = ExtResource("2_xpiny")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -23.5
+offset_right = 20.0
+offset_bottom = 23.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/v_separation = 20
+
+[node name="GameName" type="Label" parent="CenterContainer/GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_bhu4a")
+theme_override_font_sizes/font_size = 50
+text = "Guardians of taste: The Lost Recipes"
+label_settings = SubResource("LabelSettings_7mi0g")
+
+[node name="IniciarBoton" type="Button" parent="CenterContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("3_bhu4a")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxTexture_nqjyj")
+text = "Play Now"
+
+[node name="Salir" type="Button" parent="CenterContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("3_bhu4a")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxTexture_nqjyj")
+text = "Quit Game"
+
+[connection signal="pressed" from="CenterContainer/GridContainer/IniciarBoton" to="." method="_on_iniciar_boton_pressed"]
+[connection signal="pressed" from="CenterContainer/GridContainer/Salir" to="." method="_on_salir_pressed"]

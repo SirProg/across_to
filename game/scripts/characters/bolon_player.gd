@@ -8,7 +8,7 @@ extends CharacterBody2D
 @export var special_projectile_scene: PackedScene
 
 @export var shoot_cooldown: float = 0.3
-@export var special_cooldown: float = 20.0
+@export var special_cooldown: float = 5.0
 @export var melee_duration: float = 0.2
 
 @export var normal_size_loss: float = 0.97  # 3% de pérdida
@@ -23,12 +23,27 @@ var time_since_shoot: float = 0.0
 var time_since_special: float = 0.0
 var current_scale: Vector2 = Vector2(1, 1)
 
+var base_sprite_scale: Vector2 = Vector2(1, 1)
+var base_collision_size: Vector2
+
+@onready var collision_shape = $CollisionShape2D
 @onready var sprite = $Sprite2D
+
 @onready var melee_hitbox = $MeleeHitbox
 @onready var pickup_detector = $PickupDetector
 
+
 func _ready():
+	
+	if collision_shape.shape is RectangleShape2D:
+		base_collision_size = collision_shape.shape.size
+	elif collision_shape.shape is CircleShape2D:
+		base_collision_size = Vector2(collision_shape.shape.radius, collision_shape.shape.radius)
+	elif collision_shape.shape is CapsuleShape2D:
+		base_collision_size = Vector2(collision_shape.shape.radius * 2, collision_shape.shape.height)
+	
 	current_scale = Vector2(1, 1)
+	_apply_scale()
 	sprite.scale = current_scale
 	melee_hitbox.monitoring = false
 	InputManager.move_left_pressed.connect(move_left)
@@ -40,8 +55,27 @@ func _ready():
 	InputManager.melee_requested.connect(attack_melee)
 	InputManager.special_requested.connect(use_special)
 
-	# Conecta las señales de los TouchScreenButtons
-	# Esto se hace en el nivel principal (ver paso 5)
+
+# --- APLICA ESCALA A SPRITE Y COLISIÓN ---
+func _apply_scale():
+	sprite.scale = current_scale
+	pickup_detector.scale = current_scale
+	if collision_shape.shape is RectangleShape2D:
+		var new_size = base_collision_size * current_scale
+		collision_shape.shape = collision_shape.shape.duplicate()
+		collision_shape.shape.size = new_size
+
+	elif collision_shape.shape is CircleShape2D:
+		var new_radius = base_collision_size.x * max(current_scale.x, current_scale.y)
+		collision_shape.shape = collision_shape.shape.duplicate()
+		collision_shape.shape.radius = new_radius
+
+	elif collision_shape.shape is CapsuleShape2D:
+		var new_radius = base_collision_size.x * max(current_scale.x, current_scale.y) / 2.0
+		var new_height = base_collision_size.y * current_scale.y
+		collision_shape.shape = collision_shape.shape.duplicate()
+		collision_shape.shape.radius = new_radius
+		collision_shape.shape.height = new_height
 
 func _physics_process(delta: float) -> void:
 	# Gravedad
@@ -131,16 +165,13 @@ func _reduce_size(factor: float):
 		Vector2(min_scale, min_scale),
 		Vector2(max_scale, max_scale)
 	)
+	_apply_scale()
 
-func _on_PickupDetector_area_entered(area):
-	if area.is_in_group("size_pickup"):
-		area.queue_free()
-		current_scale *= size_gain_per_pickup
-		current_scale = current_scale.clamp(
-			Vector2(min_scale, min_scale),
-			Vector2(max_scale, max_scale)
-		)
-		$Sprite2D.scale = current_scale
-
-		# ✅ Emite señal global
-		InputManager.emit_signal("size_pickup_collected", size_gain_per_pickup)
+# --- RECOLECCIÓN DE PICKUP (¡aquí está la magia!) ---
+func _on_PickupDetector_area_entered():
+	current_scale *= size_gain_per_pickup
+	current_scale = current_scale.clamp(
+		Vector2(min_scale, min_scale),
+		Vector2(max_scale, max_scale)
+	)
+	_apply_scale()

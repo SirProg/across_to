@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="game"
-run/main_scene="uid://c5ayqheupoycf"
+run/main_scene="uid://ds3mebeu2yhwa"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
 
-SignalBus="*res://autoload/SignalBus.gd"
 InputManager="*res://autoload/InputManager.gd"
+SignalBus="*res://autoload/SignalBus.gd"
 
 [display]
 

@@ -6,16 +6,16 @@ extends EnemyBase
 
 
 enum AttackType {
-    MELEE_SLAM,
-    RANGED_PROJECTILE,
-    AREA_SHOCKWAVE,
-    DASH_ATTACK
+	MELEE_SLAM,
+	RANGED_PROJECTILE,
+	AREA_SHOCKWAVE,
+	DASH_ATTACK
 }
 
 enum BossPhase {
-    PHASE_1,  ## 100%-66% health: Basic attacks
-    PHASE_2,  ## 66%-33% health: Faster, mixed attacks
-    PHASE_3   ## 33%-0% health: Aggressive, all attacks
+	PHASE_1,  ## 100%-66% health: Basic attacks
+	PHASE_2,  ## 66%-33% health: Faster, mixed attacks
+	PHASE_3   ## 33%-0% health: Aggressive, all attacks
 }
 
 @export_group("Boss Stats")
@@ -63,290 +63,290 @@ var can_attack: bool = true
 
 
 func _on_ready() -> void:
-    _setup_boss_specific()
-    _setup_state_machine()
-    _setup_attack_cooldown()
+	_setup_boss_specific()
+	_setup_state_machine()
+	_setup_attack_cooldown()
 
 
 func _setup_boss_specific() -> void:
-    # Override base stats for boss
-    max_health = 500
-    current_health = max_health
-    movement_speed = 120.0
-    knockback_resistance = 0.8
-    score_value = 1000
+	# Override base stats for boss
+	max_health = 500
+	current_health = max_health
+	movement_speed = 120.0
+	knockback_resistance = 0.8
+	score_value = 1000
 
 
 func _setup_state_machine() -> void:
-    state_machine = StateMachine.new()
-    state_machine.name = "StateMachine"
-    add_child(state_machine)
+	state_machine = StateMachine.new()
+	state_machine.name = "StateMachine"
+	add_child(state_machine)
 
-    # Create states
-    var idle_state = BossIdleState.new()
-    idle_state.name = "Idle"
-    state_machine.add_child(idle_state)
+	# Create states
+	var idle_state = BossIdleState.new()
+	idle_state.name = "Idle"
+	state_machine.add_child(idle_state)
 
-    var chase_state = BossChaseState.new()
-    chase_state.name = "Chase"
-    state_machine.add_child(chase_state)
+	var chase_state = BossChaseState.new()
+	chase_state.name = "Chase"
+	state_machine.add_child(chase_state)
 
-    var attack_state = BossAttackState.new()
-    attack_state.name = "Attack"
-    state_machine.add_child(attack_state)
+	var attack_state = BossAttackState.new()
+	attack_state.name = "Attack"
+	state_machine.add_child(attack_state)
 
-    var phase_transition_state = BossPhaseTransitionState.new()
-    phase_transition_state.name = "PhaseTransition"
-    state_machine.add_child(phase_transition_state)
+	var phase_transition_state = BossPhaseTransitionState.new()
+	phase_transition_state.name = "PhaseTransition"
+	state_machine.add_child(phase_transition_state)
 
-    var death_state = BossDeathState.new()
-    death_state.name = "Death"
-    state_machine.add_child(death_state)
+	var death_state = BossDeathState.new()
+	death_state.name = "Death"
+	state_machine.add_child(death_state)
 
-    # Set initial state
-    state_machine.initial_state = state_machine.get_path_to(idle_state)
+	# Set initial state
+	state_machine.initial_state = state_machine.get_path_to(idle_state)
 
 
 func _setup_attack_cooldown() -> void:
-    attack_cooldown_timer = Timer.new()
-    attack_cooldown_timer.name = "AttackCooldown"
-    attack_cooldown_timer.wait_time = attack_cooldown
-    attack_cooldown_timer.one_shot = true
-    attack_cooldown_timer.timeout.connect(_on_attack_cooldown_timeout)
-    add_child(attack_cooldown_timer)
+	attack_cooldown_timer = Timer.new()
+	attack_cooldown_timer.name = "AttackCooldown"
+	attack_cooldown_timer.wait_time = attack_cooldown
+	attack_cooldown_timer.one_shot = true
+	attack_cooldown_timer.timeout.connect(_on_attack_cooldown_timeout)
+	add_child(attack_cooldown_timer)
 
 
 func _process_physics(_delta: float) -> void:
-    # Physics is handled by state machine states
-    pass
+	# Physics is handled by state machine states
+	pass
 
 
 func _on_take_damage(damage: int, source_position: Vector2) -> void:
-    # Check for phase transition
-    var previous_phase = current_phase
-    _update_phase()
+	# Check for phase transition
+	var previous_phase = current_phase
+	_update_phase()
 
-    if previous_phase != current_phase:
-        # Trigger phase transition
-        state_machine.transition_to("PhaseTransition")
-        # Emit boss phase change signal
-        SignalBus.boss_phase_changed.emit(boss_name, current_phase + 1)
+	if previous_phase != current_phase:
+		# Trigger phase transition
+		state_machine.transition_to("PhaseTransition")
+		# Emit boss phase change signal
+		SignalBus.boss_phase_changed.emit(boss_name, current_phase + 1)
 
-    # Emit boss damage signal
-    SignalBus.boss_damaged.emit(boss_name, current_health, max_health)
+	# Emit boss damage signal
+	SignalBus.boss_damaged.emit(boss_name, current_health, max_health)
 
 
 func _on_death() -> void:
-    state_machine.transition_to("Death")
-    SignalBus.boss_defeated.emit(boss_name)
+	state_machine.transition_to("Death")
+	SignalBus.boss_defeated.emit(boss_name)
 
 
 func get_enemy_type() -> String:
-    return boss_name
+	return boss_name
 
 
 func _update_phase() -> void:
-    var health_percentage = float(current_health) / float(max_health)
+	var health_percentage = float(current_health) / float(max_health)
 
-    if health_percentage > 0.66:
-        current_phase = BossPhase.PHASE_1
-    elif health_percentage > 0.33:
-        current_phase = BossPhase.PHASE_2
-    else:
-        current_phase = BossPhase.PHASE_3
+	if health_percentage > 0.66:
+		current_phase = BossPhase.PHASE_1
+	elif health_percentage > 0.33:
+		current_phase = BossPhase.PHASE_2
+	else:
+		current_phase = BossPhase.PHASE_3
 
 
 func get_distance_to_player() -> float:
-    if player:
-        return global_position.distance_to(player.global_position)
-    return INF
+	if player:
+		return global_position.distance_to(player.global_position)
+	return INF
 
 
 func choose_attack() -> AttackType:
-    var distance = get_distance_to_player()
+	var distance = get_distance_to_player()
 
-    match current_phase:
-        BossPhase.PHASE_1:
-            # Simple pattern: melee if close, ranged if far
-            if distance < melee_range * 1.5:
-                return AttackType.MELEE_SLAM
-            else:
-                return AttackType.RANGED_PROJECTILE
+	match current_phase:
+		BossPhase.PHASE_1:
+			# Simple pattern: melee if close, ranged if far
+			if distance < melee_range * 1.5:
+				return AttackType.MELEE_SLAM
+			else:
+				return AttackType.RANGED_PROJECTILE
 
-        BossPhase.PHASE_2:
-            # Mixed attacks
-            if distance < melee_range * 1.5:
-                return [AttackType.MELEE_SLAM, AttackType.AREA_SHOCKWAVE].pick_random()
-            else:
-                return AttackType.RANGED_PROJECTILE
+		BossPhase.PHASE_2:
+			# Mixed attacks
+			if distance < melee_range * 1.5:
+				return [AttackType.MELEE_SLAM, AttackType.AREA_SHOCKWAVE].pick_random()
+			else:
+				return AttackType.RANGED_PROJECTILE
 
-        BossPhase.PHASE_3:
-            # All attacks available, more aggressive
-            if distance < melee_range:
-                return [AttackType.MELEE_SLAM, AttackType.AREA_SHOCKWAVE].pick_random()
-            elif distance > max_attack_distance:
-                return AttackType.DASH_ATTACK
-            else:
-                return [AttackType.RANGED_PROJECTILE, AttackType.DASH_ATTACK].pick_random()
+		BossPhase.PHASE_3:
+			# All attacks available, more aggressive
+			if distance < melee_range:
+				return [AttackType.MELEE_SLAM, AttackType.AREA_SHOCKWAVE].pick_random()
+			elif distance > max_attack_distance:
+				return AttackType.DASH_ATTACK
+			else:
+				return [AttackType.RANGED_PROJECTILE, AttackType.DASH_ATTACK].pick_random()
 
-    return AttackType.MELEE_SLAM
+	return AttackType.MELEE_SLAM
 
 
 func execute_attack(attack_type: AttackType) -> void:
-    can_attack = false
-    attack_cooldown_timer.start()
+	can_attack = false
+	attack_cooldown_timer.start()
 
-    match attack_type:
-        AttackType.MELEE_SLAM:
-            _execute_melee_attack()
-        AttackType.RANGED_PROJECTILE:
-            _execute_ranged_attack()
-        AttackType.AREA_SHOCKWAVE:
-            _execute_area_attack()
-        AttackType.DASH_ATTACK:
-            _execute_dash_attack()
+	match attack_type:
+		AttackType.MELEE_SLAM:
+			_execute_melee_attack()
+		AttackType.RANGED_PROJECTILE:
+			_execute_ranged_attack()
+		AttackType.AREA_SHOCKWAVE:
+			_execute_area_attack()
+		AttackType.DASH_ATTACK:
+			_execute_dash_attack()
 
 
 func _execute_melee_attack() -> void:
-    SignalBus.boss_attack_started.emit(boss_name, "melee_slam")
+	SignalBus.boss_attack_started.emit(boss_name, "melee_slam")
 
-    # Telegraph phase
-    await get_tree().create_timer(melee_telegraph_time).timeout
+	# Telegraph phase
+	await get_tree().create_timer(melee_telegraph_time).timeout
 
-    # Attack active
-    var hits = _check_melee_hit()
-    if hits > 0:
-        # Player was hit
-        pass
+	# Attack active
+	var hits = _check_melee_hit()
+	if hits > 0:
+		# Player was hit
+		pass
 
-    await get_tree().create_timer(melee_active_time).timeout
+	await get_tree().create_timer(melee_active_time).timeout
 
-    SignalBus.boss_attack_finished.emit(boss_name, "melee_slam")
-    state_machine.transition_to("Idle")
+	SignalBus.boss_attack_finished.emit(boss_name, "melee_slam")
+	state_machine.transition_to("Idle")
 
 
 func _execute_ranged_attack() -> void:
-    SignalBus.boss_attack_started.emit(boss_name, "ranged_projectile")
+	SignalBus.boss_attack_started.emit(boss_name, "ranged_projectile")
 
-    var projectile_count = projectile_count_phase1
-    match current_phase:
-        BossPhase.PHASE_2:
-            projectile_count = projectile_count_phase2
-        BossPhase.PHASE_3:
-            projectile_count = projectile_count_phase3
+	var projectile_count = projectile_count_phase1
+	match current_phase:
+		BossPhase.PHASE_2:
+			projectile_count = projectile_count_phase2
+		BossPhase.PHASE_3:
+			projectile_count = projectile_count_phase3
 
-    await get_tree().create_timer(0.3).timeout
+	await get_tree().create_timer(0.3).timeout
 
-    _spawn_projectiles(projectile_count)
+	_spawn_projectiles(projectile_count)
 
-    SignalBus.boss_attack_finished.emit(boss_name, "ranged_projectile")
-    state_machine.transition_to("Idle")
+	SignalBus.boss_attack_finished.emit(boss_name, "ranged_projectile")
+	state_machine.transition_to("Idle")
 
 
 func _execute_area_attack() -> void:
-    SignalBus.boss_attack_started.emit(boss_name, "area_shockwave")
+	SignalBus.boss_attack_started.emit(boss_name, "area_shockwave")
 
-    # Telegraph
-    await get_tree().create_timer(shockwave_telegraph_time).timeout
+	# Telegraph
+	await get_tree().create_timer(shockwave_telegraph_time).timeout
 
-    # Execute shockwave
-    _check_shockwave_hit()
+	# Execute shockwave
+	_check_shockwave_hit()
 
-    await get_tree().create_timer(shockwave_active_time).timeout
+	await get_tree().create_timer(shockwave_active_time).timeout
 
-    SignalBus.boss_attack_finished.emit(boss_name, "area_shockwave")
-    state_machine.transition_to("Idle")
+	SignalBus.boss_attack_finished.emit(boss_name, "area_shockwave")
+	state_machine.transition_to("Idle")
 
 
 func _execute_dash_attack() -> void:
-    SignalBus.boss_attack_started.emit(boss_name, "dash_attack")
+	SignalBus.boss_attack_started.emit(boss_name, "dash_attack")
 
-    if player:
-        var dash_direction = direction_to_player
-        var dash_timer = 0.0
+	if player:
+		var dash_direction = direction_to_player
+		var dash_timer = 0.0
 
-        while dash_timer < dash_duration:
-            velocity = dash_direction * dash_speed
-            dash_timer += get_physics_process_delta_time()
-            await get_tree().process_frame
+		while dash_timer < dash_duration:
+			velocity = dash_direction * dash_speed
+			dash_timer += get_physics_process_delta_time()
+			await get_tree().process_frame
 
-        velocity = Vector2.ZERO
+		velocity = Vector2.ZERO
 
-    SignalBus.boss_attack_finished.emit(boss_name, "dash_attack")
-    state_machine.transition_to("Idle")
+	SignalBus.boss_attack_finished.emit(boss_name, "dash_attack")
+	state_machine.transition_to("Idle")
 
 
 func _check_melee_hit() -> int:
-    var space_state = get_world_2d().direct_space_state
-    var query = PhysicsShapeQueryParameters2D.new()
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsShapeQueryParameters2D.new()
 
-    # Create circle shape for melee range
-    var shape = CircleShape2D.new()
-    shape.radius = melee_range
-    query.shape = shape
-    query.transform = global_transform
-    query.collision_mask = 1  # Assuming player is on layer 1
+	# Create circle shape for melee range
+	var shape = CircleShape2D.new()
+	shape.radius = melee_range
+	query.shape = shape
+	query.transform = global_transform
+	query.collision_mask = 1  # Assuming player is on layer 1
 
-    var results = space_state.intersect_shape(query, 10)
-    var hit_count = 0
+	var results = space_state.intersect_shape(query, 10)
+	var hit_count = 0
 
-    for result in results:
-        if result.collider.has_method("take_damage"):
-            result.collider.take_damage(melee_damage, global_position)
-            hit_count += 1
+	for result in results:
+		if result.collider.has_method("take_damage"):
+			result.collider.take_damage(melee_damage, global_position)
+			hit_count += 1
 
-    return hit_count
+	return hit_count
 
 
 func _check_shockwave_hit() -> void:
-    var space_state = get_world_2d().direct_space_state
-    var query = PhysicsShapeQueryParameters2D.new()
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsShapeQueryParameters2D.new()
 
-    var shape = CircleShape2D.new()
-    shape.radius = shockwave_radius
-    query.shape = shape
-    query.transform = global_transform
-    query.collision_mask = 1
+	var shape = CircleShape2D.new()
+	shape.radius = shockwave_radius
+	query.shape = shape
+	query.transform = global_transform
+	query.collision_mask = 1
 
-    var results = space_state.intersect_shape(query, 10)
+	var results = space_state.intersect_shape(query, 10)
 
-    for result in results:
-        if result.collider.has_method("take_damage"):
-            result.collider.take_damage(shockwave_damage, global_position)
+	for result in results:
+		if result.collider.has_method("take_damage"):
+			result.collider.take_damage(shockwave_damage, global_position)
 
 
 func _spawn_projectiles(count: int) -> void:
-    if not projectile_scene or not player:
-        return
+	if not projectile_scene or not player:
+		return
 
-    var angle_step = 360.0 / count
-    var start_angle = -90.0  # Start from top
+	var angle_step = 360.0 / count
+	var start_angle = -90.0  # Start from top
 
-    if count == 1:
-        # Single projectile aimed at player
-        _spawn_single_projectile(direction_to_player)
-    else:
-        # Spread pattern
-        for i in range(count):
-            var angle = deg_to_rad(start_angle + (angle_step * i))
-            var direction = Vector2(cos(angle), sin(angle))
-            _spawn_single_projectile(direction)
+	if count == 1:
+		# Single projectile aimed at player
+		_spawn_single_projectile(direction_to_player)
+	else:
+		# Spread pattern
+		for i in range(count):
+			var angle = deg_to_rad(start_angle + (angle_step * i))
+			var direction = Vector2(cos(angle), sin(angle))
+			_spawn_single_projectile(direction)
 
 
 func _spawn_single_projectile(direction: Vector2) -> void:
-    if not projectile_scene:
-        return
+	if not projectile_scene:
+		return
 
-    var projectile = projectile_scene.instantiate()
-    get_parent().add_child(projectile)
-    projectile.global_position = global_position
+	var projectile = projectile_scene.instantiate()
+	get_parent().add_child(projectile)
+	projectile.global_position = global_position
 
-    if projectile.has_method("initialize"):
-        projectile.initialize(direction, projectile_speed, projectile_damage)
+	if projectile.has_method("initialize"):
+		projectile.initialize(direction, projectile_speed, projectile_damage)
 
 
 func _on_attack_cooldown_timeout() -> void:
-    can_attack = true
+	can_attack = true
 
 
 # ===========================
@@ -354,84 +354,84 @@ func _on_attack_cooldown_timeout() -> void:
 # ===========================
 
 class BossIdleState extends State:
-    var boss: BossEnemy
-    var idle_timer: float = 0.0
-    var idle_duration: float = 0.0
+	var boss: BossEnemy
+	var idle_timer: float = 0.0
+	var idle_duration: float = 0.0
 
-    func enter(_data: Dictionary = {}) -> void:
-        boss = state_machine.get_parent() as BossEnemy
-        boss.velocity = Vector2.ZERO
-        idle_duration = randf_range(boss.idle_time_min, boss.idle_time_max)
-        idle_timer = 0.0
+	func enter(_data: Dictionary = {}) -> void:
+		boss = state_machine.get_parent() as BossEnemy
+		boss.velocity = Vector2.ZERO
+		idle_duration = randf_range(boss.idle_time_min, boss.idle_time_max)
+		idle_timer = 0.0
 
-    func update(delta: float) -> void:
-        idle_timer += delta
+	func update(delta: float) -> void:
+		idle_timer += delta
 
-        if idle_timer >= idle_duration:
-            # Decide next action
-            if boss.can_attack and boss.get_distance_to_player() < boss.max_attack_distance:
-                finish("Attack")
-            else:
-                finish("Chase")
+		if idle_timer >= idle_duration:
+			# Decide next action
+			if boss.can_attack and boss.get_distance_to_player() < boss.max_attack_distance:
+				finish("Attack")
+			else:
+				finish("Chase")
 
 
 class BossChaseState extends State:
-    var boss: BossEnemy
+	var boss: BossEnemy
 
-    func enter(_data: Dictionary = {}) -> void:
-        boss = state_machine.get_parent() as BossEnemy
+	func enter(_data: Dictionary = {}) -> void:
+		boss = state_machine.get_parent() as BossEnemy
 
-    func update(_delta: float) -> void:
-        if not boss.player:
-            finish("Idle")
-            return
+	func update(_delta: float) -> void:
+		if not boss.player:
+			finish("Idle")
+			return
 
-        var distance = boss.get_distance_to_player()
+		var distance = boss.get_distance_to_player()
 
-        # Check if in attack range
-        if boss.can_attack and distance < boss.max_attack_distance:
-            finish("Attack")
-            return
+		# Check if in attack range
+		if boss.can_attack and distance < boss.max_attack_distance:
+			finish("Attack")
+			return
 
-        # Move toward player
-        boss.velocity.x = boss.direction_to_player.x * boss.movement_speed
+		# Move toward player
+		boss.velocity.x = boss.direction_to_player.x * boss.movement_speed
 
-        # Stop chasing if too far
-        if distance > boss.max_attack_distance * 2:
-            finish("Idle")
+		# Stop chasing if too far
+		if distance > boss.max_attack_distance * 2:
+			finish("Idle")
 
 
 class BossAttackState extends State:
-    var boss: BossEnemy
+	var boss: BossEnemy
 
-    func enter(_data: Dictionary = {}) -> void:
-        boss = state_machine.get_parent() as BossEnemy
-        boss.velocity = Vector2.ZERO
+	func enter(_data: Dictionary = {}) -> void:
+		boss = state_machine.get_parent() as BossEnemy
+		boss.velocity = Vector2.ZERO
 
-        # Choose and execute attack
-        var attack_type = boss.choose_attack()
-        boss.execute_attack(attack_type)
+		# Choose and execute attack
+		var attack_type = boss.choose_attack()
+		boss.execute_attack(attack_type)
 
 
 class BossPhaseTransitionState extends State:
-    var boss: BossEnemy
+	var boss: BossEnemy
 
-    func enter(_data: Dictionary = {}) -> void:
-        boss = state_machine.get_parent() as BossEnemy
-        boss.velocity = Vector2.ZERO
-        boss.is_invulnerable = true
+	func enter(_data: Dictionary = {}) -> void:
+		boss = state_machine.get_parent() as BossEnemy
+		boss.velocity = Vector2.ZERO
+		boss.is_invulnerable = true
 
-        # Wait for transition duration
-        await boss.get_tree().create_timer(boss.phase_transition_invulnerability).timeout
+		# Wait for transition duration
+		await boss.get_tree().create_timer(boss.phase_transition_invulnerability).timeout
 
-        boss.is_invulnerable = false
-        finish("Idle")
+		boss.is_invulnerable = false
+		finish("Idle")
 
 
 class BossDeathState extends State:
-    var boss: BossEnemy
+	var boss: BossEnemy
 
-    func enter(_data: Dictionary = {}) -> void:
-        boss = state_machine.get_parent() as BossEnemy
-        boss.velocity = Vector2.ZERO
-        # Death animation and cleanup handled by base class
+	func enter(_data: Dictionary = {}) -> void:
+		boss = state_machine.get_parent() as BossEnemy
+		boss.velocity = Vector2.ZERO
+		# Death animation and cleanup handled by base class
