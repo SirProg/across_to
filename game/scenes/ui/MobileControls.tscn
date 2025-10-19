@@ -1,6 +1,5 @@
 [gd_scene load_steps=14 format=3 uid="uid://cyaxc764ehe4w"]
 
-[ext_resource type="Script" uid="uid://djfxjn2ao8xj8" path="res://scripts/systems/ui/mobile_comtrols.gd" id="1_1ycnm"]
 [ext_resource type="Texture2D" uid="uid://d100vhew8u1mn" path="res://assets/sprites/ui/controlers/basic/ButtonRight.png" id="1_vgxx8"]
 [ext_resource type="Texture2D" uid="uid://dr5jpwfe5lcv8" path="res://assets/sprites/ui/controlers/pressed/ButtonRightPreseed.png" id="2_1ycnm"]
 [ext_resource type="Texture2D" uid="uid://c4ejxsvv2bfi0" path="res://assets/sprites/ui/controlers/basic/ButtonLeft.png" id="3_eaxl8"]
@@ -9,6 +8,25 @@
 [ext_resource type="Texture2D" uid="uid://btrdhn0ysh6u5" path="res://assets/sprites/ui/controlers/pressed/ButtonJumpPreseed.png" id="6_n5eeb"]
 [ext_resource type="Texture2D" uid="uid://cgkslenkl6g81" path="res://assets/sprites/ui/controlers/basic/ButtonThrow.png" id="7_gilpd"]
 [ext_resource type="Texture2D" uid="uid://454dsmgy56fk" path="res://assets/sprites/ui/controlers/pressed/ButtonThrowPreseed.png" id="8_dji21"]
+
+[sub_resource type="GDScript" id="GDScript_vgxx8"]
+script/source = "extends CanvasLayer
+
+@onready var btn_left = $BtnLeft
+@onready var btn_right = $BtnRight
+@onready var btn_jump = $BtnJump
+@onready var btn_shoot = $BtnShoot
+@onready var btn_special = $BtnSpecial
+
+func _ready():
+	btn_left.pressed.connect(InputManager.on_move_left_press)
+	btn_left.released.connect(InputManager.on_move_left_release)
+	btn_right.pressed.connect(InputManager.on_move_right_press)
+	btn_right.released.connect(InputManager.on_move_right_release)
+	btn_jump.pressed.connect(InputManager.on_jump_press)
+	btn_shoot.pressed.connect(InputManager.on_shoot_normal_press)
+	btn_special.pressed.connect(InputManager.on_special_ability_press)
+"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tdtpw"]
 radius = 50.0
@@ -31,7 +49,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-script = ExtResource("1_1ycnm")
+script = SubResource("GDScript_vgxx8")
 
 [node name="RightButton" type="TouchScreenButton" parent="CanvasLayer"]
 position = Vector2(246, 450)

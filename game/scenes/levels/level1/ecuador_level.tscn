@@ -111,14 +111,26 @@ collision_mask = 103
 position = Vector2(122, -235)
 position_smoothing_enabled = true
 
-[node name="SizePickup" parent="." instance=ExtResource("4_238wg")]
+[node name="SizePickup4" parent="." instance=ExtResource("4_238wg")]
+position = Vector2(441, 263)
+
+[node name="SizePickup7" parent="." instance=ExtResource("4_238wg")]
 position = Vector2(223, 261)
+
+[node name="SizePickup6" parent="." instance=ExtResource("4_238wg")]
+position = Vector2(115, 265)
+
+[node name="SizePickup" parent="." instance=ExtResource("4_238wg")]
+position = Vector2(47, 263)
 
 [node name="SizePickup3" parent="." instance=ExtResource("4_238wg")]
 position = Vector2(337, 295)
 
 [node name="SizePickup2" parent="." instance=ExtResource("4_238wg")]
-position = Vector2(441, 263)
+position = Vector2(518, 263)
+
+[node name="SizePickup5" parent="." instance=ExtResource("4_238wg")]
+position = Vector2(598, 263)
 
 [node name="MobileUi" parent="." instance=ExtResource("3_238wg")]
 

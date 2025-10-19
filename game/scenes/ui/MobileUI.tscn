@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://dttvhmn4q1f5a"]
 
 [ext_resource type="Texture2D" uid="uid://c4ejxsvv2bfi0" path="res://assets/sprites/ui/controlers/basic/ButtonLeft.png" id="1_cwmqd"]
-[ext_resource type="Script" uid="uid://s4ud8ecir0l0" path="res://scenes/ui/mobile_ui.gd" id="1_mlxy7"]
+[ext_resource type="Script" uid="uid://s4ud8ecir0l0" path="res://scripts/systems/ui/mobile_ui.gd" id="1_mlxy7"]
 [ext_resource type="Texture2D" uid="uid://cdu8l45rsk3bb" path="res://assets/sprites/ui/controlers/pressed/ButtonLeftPressed.png" id="2_mlxy7"]
 [ext_resource type="Texture2D" uid="uid://d100vhew8u1mn" path="res://assets/sprites/ui/controlers/basic/ButtonRight.png" id="3_osjcv"]
 [ext_resource type="Texture2D" uid="uid://dr5jpwfe5lcv8" path="res://assets/sprites/ui/controlers/pressed/ButtonRightPreseed.png" id="4_01wt0"]
