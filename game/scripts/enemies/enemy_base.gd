@@ -30,127 +30,127 @@ var direction_to_player: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
-	current_health = max_health
-	_setup_timers()
-	_on_ready()
+    current_health = max_health
+    _setup_timers()
+    _on_ready()
 
 
 func _physics_process(delta: float) -> void:
-	if is_dead:
-		return
+    if is_dead:
+        return
 
-	# Apply gravity if not flying
-	if not is_flying and not is_on_floor():
-		velocity.y += gravity * delta
+    # Apply gravity if not flying
+    if not is_flying and not is_on_floor():
+        velocity.y += gravity * delta
 
-	# Update player tracking
-	_update_player_tracking()
+    # Update player tracking
+    _update_player_tracking()
 
-	# Custom physics (override in child classes)
-	_process_physics(delta)
+    # Custom physics (override in child classes)
+    _process_physics(delta)
 
-	move_and_slide()
+    move_and_slide()
 
 
 ## Virtual methods - Override in child classes
 func _on_ready() -> void:
-	pass
+    pass
 
 
 func _process_physics(_delta: float) -> void:
-	pass
+    pass
 
 
 func _on_take_damage(_damage: int, _source_position: Vector2) -> void:
-	pass
+    pass
 
 
 func _on_death() -> void:
-	pass
+    pass
 
 
 ## Public methods
 func take_damage(damage: int, source_position: Vector2 = Vector2.ZERO) -> void:
-	if is_dead or is_invulnerable:
-		return
+    if is_dead or is_invulnerable:
+        return
 
-	current_health -= damage
-	current_health = max(0, current_health)
+    current_health -= damage
+    current_health = max(0, current_health)
 
-	# Start invulnerability period
-	is_invulnerable = true
-	invulnerability_timer.start()
+    # Start invulnerability period
+    is_invulnerable = true
+    invulnerability_timer.start()
 
-	# Apply knockback
-	if source_position != Vector2.ZERO:
-		_apply_knockback(source_position)
+    # Apply knockback
+    if source_position != Vector2.ZERO:
+        _apply_knockback(source_position)
 
-	# Custom damage response
-	_on_take_damage(damage, source_position)
+    # Custom damage response
+    _on_take_damage(damage, source_position)
 
-	# Check for death
-	if current_health <= 0:
-		die()
+    # Check for death
+    if current_health <= 0:
+        die()
 
 
 func die() -> void:
-	if is_dead:
-		return
+    if is_dead:
+        return
 
-	is_dead = true
-	velocity = Vector2.ZERO
+    is_dead = true
+    velocity = Vector2.ZERO
 
-	# Emit signal for score/game tracking
-	SignalBus.enemy_defeated.emit(get_enemy_type(), global_position)
+    # Emit signal for score/game tracking
+    SignalBus.enemy_defeated.emit(get_enemy_type(), global_position)
 
-	# Custom death behavior
-	_on_death()
+    # Custom death behavior
+    _on_death()
 
-	# Start death timer
-	death_timer.start()
+    # Start death timer
+    death_timer.start()
 
 
 func get_enemy_type() -> String:
-	return "base_enemy"
+    return "base_enemy"
 
 
 func heal(amount: int) -> void:
-	current_health = min(current_health + amount, max_health)
+    current_health = min(current_health + amount, max_health)
 
 
 func set_player_reference(player_node: CharacterBody2D) -> void:
-	player = player_node
+    player = player_node
 
 
 ## Private methods
 func _setup_timers() -> void:
-	# Invulnerability timer
-	invulnerability_timer.wait_time = invulnerability_time
-	invulnerability_timer.one_shot = true
-	invulnerability_timer.timeout.connect(_on_invulnerability_timeout)
-	add_child(invulnerability_timer)
+    # Invulnerability timer
+    invulnerability_timer.wait_time = invulnerability_time
+    invulnerability_timer.one_shot = true
+    invulnerability_timer.timeout.connect(_on_invulnerability_timeout)
+    add_child(invulnerability_timer)
 
-	# Death timer
-	death_timer.wait_time = death_duration
-	death_timer.one_shot = true
-	death_timer.timeout.connect(_on_death_timer_timeout)
-	add_child(death_timer)
+    # Death timer
+    death_timer.wait_time = death_duration
+    death_timer.one_shot = true
+    death_timer.timeout.connect(_on_death_timer_timeout)
+    add_child(death_timer)
 
 
 func _update_player_tracking() -> void:
-	if player and is_instance_valid(player):
-		direction_to_player = (player.global_position - global_position).normalized()
+    if player and is_instance_valid(player):
+        direction_to_player = (player.global_position - global_position).normalized()
 
 
 func _apply_knockback(source_position: Vector2) -> void:
-	var knockback_direction = (global_position - source_position).normalized()
-	var knockback_strength = (1.0 - knockback_resistance) * 300.0
-	velocity += knockback_direction * knockback_strength
+    var knockback_direction = (global_position - source_position).normalized()
+    var knockback_strength = (1.0 - knockback_resistance) * 300.0
+    velocity += knockback_direction * knockback_strength
 
 
 func _on_invulnerability_timeout() -> void:
-	is_invulnerable = false
+    is_invulnerable = false
 
 
 func _on_death_timer_timeout() -> void:
-	queue_free()
+    queue_free()

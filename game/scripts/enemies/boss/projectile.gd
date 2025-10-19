@@ -17,66 +17,66 @@ var has_hit: bool = false
 
 
 func _ready() -> void:
-	# Setup lifetime timer
-	lifetime_timer.wait_time = lifetime
-	lifetime_timer.one_shot = true
-	lifetime_timer.timeout.connect(_on_lifetime_timeout)
-	add_child(lifetime_timer)
-	lifetime_timer.start()
+    # Setup lifetime timer
+    lifetime_timer.wait_time = lifetime
+    lifetime_timer.one_shot = true
+    lifetime_timer.timeout.connect(_on_lifetime_timeout)
+    add_child(lifetime_timer)
+    lifetime_timer.start()
 
-	# Connect collision signals
-	body_entered.connect(_on_body_entered)
-	area_entered.connect(_on_area_entered)
+    # Connect collision signals
+    body_entered.connect(_on_body_entered)
+    area_entered.connect(_on_area_entered)
 
-	# Set collision layers
-	collision_layer = 4  # Projectile layer
-	collision_mask = 1   # Hit player layer
+    # Set collision layers
+    collision_layer = 4  # Projectile layer
+    collision_mask = 1   # Hit player layer
 
-	# Visual setup
-	if sprite:
-		sprite.modulate = sprite_color
+    # Visual setup
+    if sprite:
+        sprite.modulate = sprite_color
 
-	# Rotate sprite to face direction
-	rotation = direction.angle()
+    # Rotate sprite to face direction
+    rotation = direction.angle()
 
 
 func _physics_process(delta: float) -> void:
-	position += direction * speed * delta
+    position += direction * speed * delta
 
 
 func initialize(proj_direction: Vector2, proj_speed: float, proj_damage: int) -> void:
-	direction = proj_direction.normalized()
-	speed = proj_speed
-	damage = proj_damage
+    direction = proj_direction.normalized()
+    speed = proj_speed
+    damage = proj_damage
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if has_hit:
-		return
+    if has_hit:
+        return
 
-	# Check if it's the player or damageable object
-	if body.has_method("take_damage"):
-		body.take_damage(damage, global_position)
-		_destroy()
+    # Check if it's the player or damageable object
+    if body.has_method("take_damage"):
+        body.take_damage(damage, global_position)
+        _destroy()
 
 
 func _on_area_entered(_area: Area2D) -> void:
-	# Hit something else, destroy
-	if not has_hit:
-		_destroy()
+    # Hit something else, destroy
+    if not has_hit:
+        _destroy()
 
 
 func _on_lifetime_timeout() -> void:
-	_destroy()
+    _destroy()
 
 
 func _destroy() -> void:
-	if has_hit:
-		return
+    if has_hit:
+        return
 
-	has_hit = true
+    has_hit = true
 
-	# Optional: spawn impact effect here
-	SignalBus.projectile_impact.emit(global_position)
+    # Optional: spawn impact effect here
+    SignalBus.projectile_impact.emit(global_position)
 
-	queue_free()
+    queue_free()

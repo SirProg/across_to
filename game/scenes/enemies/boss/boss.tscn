@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bkw7d8hl3w8no"]
+[gd_scene load_steps=4 format=3 uid="uid://cqgnive5h261"]
+
+[ext_resource type="Script" uid="uid://dgaoktmqn827t" path="res://scripts/enemies/boss/boss_enemy.gd" id="1_cnur3"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4c6nk"]
 radius = 66.0
@@ -10,6 +12,7 @@ size = Vector2(128, 128)
 [node name="Boss" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 129
+script = ExtResource("1_cnur3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_4c6nk")

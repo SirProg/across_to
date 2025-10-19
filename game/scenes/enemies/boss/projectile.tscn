@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dv4hyog1dbkri"]
+[gd_scene load_steps=4 format=3 uid="uid://dv4hyog1dbkri"]
+
+[ext_resource type="Script" uid="uid://btaeltc51xyrx" path="res://scripts/enemies/boss/projectile.gd" id="1_yp3fb"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_fxc6d"]
 size = Vector2(3, 3)
@@ -8,6 +10,7 @@ radius = 14.035668
 
 [node name="Projectile" type="Area2D"]
 collision_layer = 8
+script = ExtResource("1_yp3fb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-1.1920929e-07, -1.1920929e-07)
