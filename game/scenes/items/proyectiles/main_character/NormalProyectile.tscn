@@ -1,10 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://cj6tw5vjgpb21"]
+[gd_scene load_steps=4 format=3 uid="uid://cj6tw5vjgpb21"]
 
 [ext_resource type="Texture2D" uid="uid://br63wawgx80v" path="res://assets/sprites/items/Group 1.png" id="1_b7ov2"]
 [ext_resource type="Script" uid="uid://0f58vaok5qyv" path="res://scripts/characters/normal_proyectile.gd" id="1_ysqwn"]
 
-[node name="NormalProyectile" type="Node2D"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ysqwn"]
+
+[node name="NormalProyectile" type="Area2D"]
+collision_layer = 16
+collision_mask = 2
 script = ExtResource("1_ysqwn")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_b7ov2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(-2.7199085, 0.65797853)
+shape = SubResource("CapsuleShape2D_ysqwn")

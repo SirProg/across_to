@@ -54,10 +54,10 @@ func _ready():
 	InputManager.melee_requested.connect(attack_melee)
 	InputManager.special_requested.connect(use_special)
 
-    print("🔵 PLAYER: Initialized at position:", global_position)
+	print("🔵 PLAYER: Initialized at position:", global_position)
 
-    # Conecta las señales de los TouchScreenButtons
-    # Esto se hace en el nivel principal (ver paso 5)
+	# Conecta las señales de los TouchScreenButtons
+	# Esto se hace en el nivel principal (ver paso 5)
 
 # --- APLICA ESCALA A SPRITE Y COLISIÓN ---
 func _apply_scale():
@@ -81,134 +81,171 @@ func _apply_scale():
 		collision_shape.shape.height = new_height
 
 func _physics_process(delta: float) -> void:
-    # Gravedad
-    if not is_on_floor():
-        velocity.y += get_gravity().y * delta
+	# Gravedad
+	if not is_on_floor():
+		velocity.y += get_gravity().y * delta
 
-    # Movimiento horizontal
-    velocity.x = move_direction * move_speed
+	# Movimiento horizontal
+	velocity.x = move_direction * move_speed
 
-    # Cooldowns
-    time_since_shoot += delta
-    time_since_special += delta
+	# Cooldowns
+	time_since_shoot += delta
+	time_since_special += delta
 
-    move_and_slide()
-    sprite.scale = current_scale
+	move_and_slide()
+	sprite.scale = current_scale
 
 # --- MOVIMIENTO ---
 func move_left():
-    move_direction = -1.0
+	move_direction = -1.0
 
 func move_right():
-    move_direction = 1.0
+	move_direction = 1.0
 
 func stop_horizontal():
-    move_direction = 0.0
+	move_direction = 0.0
 
 # --- SALTO ---
 func jump():
-    if is_on_floor():
-        velocity.y = jump_velocity
+	if is_on_floor():
+		velocity.y = jump_velocity
 
 # --- DISPARO NORMAL ---
 func shoot_normal():
-    # Verifica cooldown, escena asignada Y tamaño suficiente
-    if time_since_shoot < shoot_cooldown:
-        print("En cooldown")
-        return
-    if not normal_projectile_scene:
-        print("normal_projectile_scene no asignado")
-        return
-    if current_scale.x <= min_scale:
-        print("Tamaño mínimo alcanzado: no puedes disparar normal")
-        return
+	# Verifica cooldown, escena asignada Y tamaño suficiente
+	if time_since_shoot < shoot_cooldown:
+		print("🔵 PLAYER: Shoot on cooldown")
+		return
+	if not normal_projectile_scene:
+		print("🔵 PLAYER: ERROR - normal_projectile_scene not assigned")
+		return
+	if current_scale.x <= min_scale:
+		print("🔵 PLAYER: Too small to shoot")
+		return
 
-    print("Disparando normal...")
-    var proj = normal_projectile_scene.instantiate()
-    proj.position = position + Vector2(20 * sign(move_direction) if move_direction != 0 else 20, 0)
-    get_parent().add_child(proj)
+	print("🔵 PLAYER: Shooting normal projectile...")
 
-    _reduce_size(normal_size_loss)
-    time_since_shoot = 0.0
+	# Instantiate projectile
+	var proj = normal_projectile_scene.instantiate()
+
+	# Determine direction based on player facing
+	var shoot_direction = Vector2.RIGHT if move_direction >= 0 else Vector2.LEFT
+	var offset_x = 30 if move_direction >= 0 else -30
+
+	# Calculate spawn position
+	var spawn_pos = global_position + Vector2(offset_x, 0)
+
+	# Initialize projectile BEFORE adding to tree (if it has initialize method)
+	if proj.has_method("initialize"):
+		proj.initialize(shoot_direction, 300.0, 25)
+
+	# CRITICAL: Set position BEFORE adding to scene tree
+	# This ensures _ready() uses the correct starting position
+	proj.position = spawn_pos
+
+	# Add to scene tree (this calls _ready())
+	get_parent().add_child(proj)
+
+	print("🔵 PLAYER: Projectile spawned at", proj.global_position, " Direction:", shoot_direction)
+
+	_reduce_size(normal_size_loss)
+	time_since_shoot = 0.0
 
 # --- ATAQUE CUERPO A CUERPO ---
 func attack_melee():
-    if not melee_hitbox:
-        print("no pegando")
-        return
-    melee_hitbox.monitoring = true
-    print("pegando")
-    await get_tree().create_timer(melee_duration).timeout
-    melee_hitbox.monitoring = false
+	if not melee_hitbox:
+		print("no pegando")
+		return
+	melee_hitbox.monitoring = true
+	print("pegando")
+	await get_tree().create_timer(melee_duration).timeout
+	melee_hitbox.monitoring = false
 
 # --- HABILIDAD ESPECIAL ---
 func use_special():
-    if time_since_special < special_cooldown:
-        print("Habilidad en cooldown")
-        return
-    if not special_projectile_scene:
-        print("special_projectile_scene no asignado")
-        return
-    if current_scale.x <= min_scale:
-        print("Tamaño mínimo alcanzado: no puedes usar habilidad especial")
-        return
+	if time_since_special < special_cooldown:
+		print("🔵 PLAYER: Special on cooldown")
+		return
+	if not special_projectile_scene:
+		print("🔵 PLAYER: ERROR - special_projectile_scene not assigned")
+		return
+	if current_scale.x <= min_scale:
+		print("🔵 PLAYER: Too small to use special")
+		return
 
-    print("Usando habilidad especial...")
-    var proj = special_projectile_scene.instantiate()
-    proj.position = position + Vector2(30 * sign(move_direction) if move_direction != 0 else 30, 0)
-    get_parent().add_child(proj)
+	print("🔵 PLAYER: ⚡ Using SPECIAL attack!")
 
-    _reduce_size(special_size_loss)
-    time_since_special = 0.0
+	# Instantiate projectile
+	var proj = special_projectile_scene.instantiate()
+
+	# Determine direction based on player facing
+	var shoot_direction = Vector2.RIGHT if move_direction >= 0 else Vector2.LEFT
+	var offset_x = 40 if move_direction >= 0 else -40
+
+	# Calculate spawn position
+	var spawn_pos = global_position + Vector2(offset_x, 0)
+
+	# Initialize projectile BEFORE adding to tree (if it has initialize method)
+	if proj.has_method("initialize"):
+		proj.initialize(shoot_direction, 250.0, 50)
+
+	# CRITICAL: Set position BEFORE adding to scene tree
+	# This ensures _ready() uses the correct starting position
+	proj.position = spawn_pos
+
+	# Add to scene tree (this calls _ready())
+	get_parent().add_child(proj)
+
+	print("🔵 PLAYER: Special spawned at", proj.global_position, " Direction:", shoot_direction)
+
+	_reduce_size(special_size_loss)
+	time_since_special = 0.0
 
 # --- MANEJO DE TAMAÑO ---
 func _reduce_size(factor: float):
-    current_scale *= factor
-    current_scale = current_scale.clamp(
-        Vector2(min_scale, min_scale),
-        Vector2(max_scale, max_scale)
-    )
+	current_scale *= factor
+	current_scale = current_scale.clamp(
+		Vector2(min_scale, min_scale),
+		Vector2(max_scale, max_scale)
+	)
 
-func _on_PickupDetector_area_entered(area):
-    if area.is_in_group("size_pickup"):
-        area.queue_free()
-        current_scale *= size_gain_per_pickup
-        current_scale = current_scale.clamp(
-            Vector2(min_scale, min_scale),
-            Vector2(max_scale, max_scale)
-        )
-        $Sprite2D.scale = current_scale
-
-        # ✅ Emite señal global
-        InputManager.emit_signal("size_pickup_collected", size_gain_per_pickup)
+# --- RECOLECCIÓN DE PICKUP (¡aquí está la magia!) ---
+func _on_PickupDetector_area_entered():
+	current_scale *= size_gain_per_pickup
+	current_scale = current_scale.clamp(
+		Vector2(min_scale, min_scale),
+		Vector2(max_scale, max_scale)
+	)
+	_apply_scale()
+	
 
 # --- DAMAGE HANDLING ---
 func take_damage(damage: int, source_position: Vector2 = Vector2.ZERO) -> void:
-    var old_scale = current_scale.x
-    print("🔵 PLAYER: TOOK DAMAGE! Damage:", damage, " Current size:", old_scale)
+	var old_scale = current_scale.x
+	print("🔵 PLAYER: TOOK DAMAGE! Damage:", damage, " Current size:", old_scale)
 
-    # Apply knockback
-    if source_position != Vector2.ZERO:
-        var knockback_direction = (global_position - source_position).normalized()
-        velocity += knockback_direction * 300.0
-        print("🔵 PLAYER: Knockback applied -", knockback_direction)
+	# Apply knockback
+	if source_position != Vector2.ZERO:
+		var knockback_direction = (global_position - source_position).normalized()
+		velocity += knockback_direction * 300.0
+		print("🔵 PLAYER: Knockback applied -", knockback_direction)
 
-    # Reduce size as damage
-    var damage_scale_factor = 1.0 - (damage * 0.01)  # 1% size loss per damage point
-    current_scale *= damage_scale_factor
-    current_scale = current_scale.clamp(
-        Vector2(min_scale, min_scale),
-        Vector2(max_scale, max_scale)
-    )
-    sprite.scale = current_scale
+	# Reduce size as damage
+	var damage_scale_factor = 1.0 - (damage * 0.01)  # 1% size loss per damage point
+	current_scale *= damage_scale_factor
+	current_scale = current_scale.clamp(
+		Vector2(min_scale, min_scale),
+		Vector2(max_scale, max_scale)
+	)
+	sprite.scale = current_scale
 
-    var new_scale = current_scale.x
-    print("🔵 PLAYER: Size changed:", old_scale, "→", new_scale)
+	var new_scale = current_scale.x
+	print("🔵 PLAYER: Size changed:", old_scale, "→", new_scale)
 
-    # Check if player is too small (death condition)
-    if current_scale.x <= min_scale:
-        print("🔵 PLAYER: ☠️ DIED! Size reached minimum")
-        SignalBus.player_died.emit()
+	# Check if player is too small (death condition)
+	if current_scale.x <= min_scale:
+		print("🔵 PLAYER: ☠️ DIED! Size reached minimum")
+		SignalBus.player_died.emit()
 
-    # Emit damage signal
-    SignalBus.player_took_damage.emit(source_position)
+	# Emit damage signal
+	SignalBus.player_took_damage.emit(source_position)

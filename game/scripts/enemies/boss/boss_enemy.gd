@@ -63,22 +63,22 @@ var can_attack: bool = true
 
 
 func _on_ready() -> void:
-    super._on_ready()  # Call parent's _on_ready if it exists
-    print("🔴 BOSS: Starting initialization - ", boss_name)
-    _setup_boss_specific()
-    _setup_state_machine()
-    _setup_attack_cooldown()
-    print("🔴 BOSS: Initialization complete")
+	super._on_ready()  # Call parent's _on_ready if it exists
+	print("🔴 BOSS: Starting initialization - ", boss_name)
+	_setup_boss_specific()
+	_setup_state_machine()
+	_setup_attack_cooldown()
+	print("🔴 BOSS: Initialization complete")
 
 
 func _setup_boss_specific() -> void:
-    # Override base stats for boss
-    max_health = 500
-    current_health = max_health
-    movement_speed = 120.0
-    knockback_resistance = 0.8
-    score_value = 1000
-    print("🔴 BOSS: Stats set - HP:", current_health, "/", max_health, " Speed:", movement_speed)
+	# Override base stats for boss
+	max_health = 500
+	current_health = max_health
+	movement_speed = 120.0
+	knockback_resistance = 0.8
+	score_value = 1000
+	print("🔴 BOSS: Stats set - HP:", current_health, "/", max_health, " Speed:", movement_speed)
 
 
 func _setup_state_machine() -> void:
@@ -107,20 +107,20 @@ func _setup_state_machine() -> void:
 	death_state.name = "Death"
 	state_machine.add_child(death_state)
 
-    # IMPORTANT: Manually initialize state machine since we're creating it dynamically
-    # Register all states
-    for child in state_machine.get_children():
-        if child is State:
-            state_machine.states[child.name] = child
-            child.state_machine = state_machine
-            child.finished.connect(state_machine._on_state_finished)
+	# IMPORTANT: Manually initialize state machine since we're creating it dynamically
+	# Register all states
+	for child in state_machine.get_children():
+		if child is State:
+			state_machine.states[child.name] = child
+			child.state_machine = state_machine
+			child.finished.connect(state_machine._on_state_finished)
 
-    # Start with idle state
-    state_machine.current_state = idle_state
-    state_machine.current_state.enter()
+	# Start with idle state
+	state_machine.current_state = idle_state
+	state_machine.current_state.enter()
 
-    print("🔴 BOSS: State machine set up with initial state: Idle")
-    print("🔴 BOSS: Player reference exists:", player != null)
+	print("🔴 BOSS: State machine set up with initial state: Idle")
+	print("🔴 BOSS: Player reference exists:", player != null)
 
 
 func _setup_attack_cooldown() -> void:
@@ -138,11 +138,18 @@ func _process_physics(_delta: float) -> void:
 
 
 func _on_take_damage(damage: int, source_position: Vector2) -> void:
+	var old_health = current_health
+	var old_phase = current_phase
+
+	print("🔴 BOSS: ⚔️ TOOK DAMAGE! Damage:", damage, " HP:", old_health, "→", current_health, "/", max_health)
+	print("🔴 BOSS: Damage source position:", source_position)
+
 	# Check for phase transition
 	var previous_phase = current_phase
 	_update_phase()
 
 	if previous_phase != current_phase:
+		print("🔴 BOSS: ⚡ PHASE TRANSITION! Phase", previous_phase + 1, "→", current_phase + 1)
 		# Trigger phase transition
 		state_machine.transition_to("PhaseTransition")
 		# Emit boss phase change signal
@@ -150,6 +157,10 @@ func _on_take_damage(damage: int, source_position: Vector2) -> void:
 
 	# Emit boss damage signal
 	SignalBus.boss_damaged.emit(boss_name, current_health, max_health)
+
+	# Show health percentage
+	var health_percent = (float(current_health) / float(max_health)) * 100.0
+	print("🔴 BOSS: Health:", health_percent, "% (", current_health, "/", max_health, ")")
 
 
 func _on_death() -> void:
@@ -173,9 +184,9 @@ func _update_phase() -> void:
 
 
 func get_distance_to_player() -> float:
-    if player and is_instance_valid(player):
-        return global_position.distance_to(player.global_position)
-    return INF
+	if player and is_instance_valid(player):
+		return global_position.distance_to(player.global_position)
+	return INF
 
 
 func choose_attack() -> AttackType:
@@ -332,18 +343,18 @@ func _check_shockwave_hit() -> void:
 
 
 func _spawn_projectiles(count: int) -> void:
-    if not projectile_scene:
-        print("🔴 BOSS: ERROR - No projectile scene assigned!")
-        return
+	if not projectile_scene:
+		print("🔴 BOSS: ERROR - No projectile scene assigned!")
+		return
 
-    if not player:
-        print("🔴 BOSS: ERROR - No player reference!")
-        return
+	if not player:
+		print("🔴 BOSS: ERROR - No player reference!")
+		return
 
-    print("🔴 BOSS: Spawning ", count, " projectiles at player")
+	print("🔴 BOSS: Spawning ", count, " projectiles at player")
 
-    var angle_step = 360.0 / count
-    var start_angle = -90.0  # Start from top
+	var angle_step = 360.0 / count
+	var start_angle = -90.0  # Start from top
 
 	if count == 1:
 		# Single projectile aimed at player
@@ -360,18 +371,18 @@ func _spawn_single_projectile(direction: Vector2) -> void:
 	if not projectile_scene:
 		return
 
-    var projectile = projectile_scene.instantiate()
+	var projectile = projectile_scene.instantiate()
 
-    # IMPORTANT: Initialize BEFORE adding to scene tree
-    # This ensures direction is set before _ready() is called
-    if projectile.has_method("initialize"):
-        projectile.initialize(direction, projectile_speed, projectile_damage)
+	# IMPORTANT: Initialize BEFORE adding to scene tree
+	# This ensures direction is set before _ready() is called
+	if projectile.has_method("initialize"):
+		projectile.initialize(direction, projectile_speed, projectile_damage)
 
-    # Now add to scene tree
-    get_parent().add_child(projectile)
-    projectile.global_position = global_position
+	# Now add to scene tree
+	get_parent().add_child(projectile)
+	projectile.global_position = global_position
 
-    print("🔴 BOSS: Projectile spawned - Dir:", direction, " Speed:", projectile_speed, " Dmg:", projectile_damage)
+	print("🔴 BOSS: Projectile spawned - Dir:", direction, " Speed:", projectile_speed, " Dmg:", projectile_damage)
 
 
 func _on_attack_cooldown_timeout() -> void:
@@ -383,81 +394,81 @@ func _on_attack_cooldown_timeout() -> void:
 # ===========================
 
 class BossIdleState extends State:
-    var boss: BossEnemy
-    var idle_timer: float = 0.0
-    var idle_duration: float = 0.0
-    var debug_timer: float = 0.0
+	var boss: BossEnemy
+	var idle_timer: float = 0.0
+	var idle_duration: float = 0.0
+	var debug_timer: float = 0.0
 
-    func enter(_data: Dictionary = {}) -> void:
-        boss = state_machine.get_parent() as BossEnemy
-        boss.velocity = Vector2.ZERO
-        idle_duration = randf_range(boss.idle_time_min, boss.idle_time_max)
-        idle_timer = 0.0
-        debug_timer = 0.0
-        print("🟡 BOSS STATE: Entered IDLE - Duration:", idle_duration, "s")
-        print("🟡 BOSS STATE: Boss position:", boss.global_position)
-        if boss.player:
-            print("🟡 BOSS STATE: Player position:", boss.player.global_position)
-            print("🟡 BOSS STATE: Distance to player:", boss.get_distance_to_player())
+	func enter(_data: Dictionary = {}) -> void:
+		boss = state_machine.get_parent() as BossEnemy
+		boss.velocity = Vector2.ZERO
+		idle_duration = randf_range(boss.idle_time_min, boss.idle_time_max)
+		idle_timer = 0.0
+		debug_timer = 0.0
+		print("🟡 BOSS STATE: Entered IDLE - Duration:", idle_duration, "s")
+		print("🟡 BOSS STATE: Boss position:", boss.global_position)
+		if boss.player:
+			print("🟡 BOSS STATE: Player position:", boss.player.global_position)
+			print("🟡 BOSS STATE: Distance to player:", boss.get_distance_to_player())
 
-    func update(delta: float) -> void:
-        idle_timer += delta
-        debug_timer += delta
+	func update(delta: float) -> void:
+		idle_timer += delta
+		debug_timer += delta
 
-        # Debug print every 1 second
-        if debug_timer >= 1.0:
-            debug_timer = 0.0
-            var distance = boss.get_distance_to_player()
-            print("🟡 IDLE: Timer:", idle_timer, "/", idle_duration, " Distance:", distance, " Can attack:", boss.can_attack)
+		# Debug print every 1 second
+		if debug_timer >= 1.0:
+			debug_timer = 0.0
+			var distance = boss.get_distance_to_player()
+			print("🟡 IDLE: Timer:", idle_timer, "/", idle_duration, " Distance:", distance, " Can attack:", boss.can_attack)
 
-        if idle_timer >= idle_duration:
-            var distance = boss.get_distance_to_player()
-            # Decide next action
-            if boss.can_attack and distance < boss.max_attack_distance:
-                print("🟡 BOSS STATE: IDLE → ATTACK (Player in range:", distance, ")")
-                finish("Attack")
-            else:
-                print("🟡 BOSS STATE: IDLE → CHASE (Player distance:", distance, ")")
-                finish("Chase")
+		if idle_timer >= idle_duration:
+			var distance = boss.get_distance_to_player()
+			# Decide next action
+			if boss.can_attack and distance < boss.max_attack_distance:
+				print("🟡 BOSS STATE: IDLE → ATTACK (Player in range:", distance, ")")
+				finish("Attack")
+			else:
+				print("🟡 BOSS STATE: IDLE → CHASE (Player distance:", distance, ")")
+				finish("Chase")
 
 
 class BossChaseState extends State:
-    var boss: BossEnemy
-    var debug_timer: float = 0.0
+	var boss: BossEnemy
+	var debug_timer: float = 0.0
 
-    func enter(_data: Dictionary = {}) -> void:
-        boss = state_machine.get_parent() as BossEnemy
-        debug_timer = 0.0
-        print("🟢 BOSS STATE: Entered CHASE - Targeting player")
+	func enter(_data: Dictionary = {}) -> void:
+		boss = state_machine.get_parent() as BossEnemy
+		debug_timer = 0.0
+		print("🟢 BOSS STATE: Entered CHASE - Targeting player")
 
-    func update(delta: float) -> void:
-        debug_timer += delta
+	func update(delta: float) -> void:
+		debug_timer += delta
 
-        if not boss.player:
-            print("🟢 BOSS STATE: CHASE → IDLE (No player)")
-            finish("Idle")
-            return
+		if not boss.player:
+			print("🟢 BOSS STATE: CHASE → IDLE (No player)")
+			finish("Idle")
+			return
 
 		var distance = boss.get_distance_to_player()
 
-        # Debug every 0.5 seconds
-        if debug_timer >= 0.5:
-            debug_timer = 0.0
-            print("🟢 CHASE: Distance:", distance, " Velocity:", boss.velocity, " Direction:", boss.direction_to_player)
+		# Debug every 0.5 seconds
+		if debug_timer >= 0.5:
+			debug_timer = 0.0
+			print("🟢 CHASE: Distance:", distance, " Velocity:", boss.velocity, " Direction:", boss.direction_to_player)
 
-        # Check if in attack range
-        if boss.can_attack and distance < boss.max_attack_distance:
-            print("🟢 BOSS STATE: CHASE → ATTACK (In range:", distance, ")")
-            finish("Attack")
-            return
+		# Check if in attack range
+		if boss.can_attack and distance < boss.max_attack_distance:
+			print("🟢 BOSS STATE: CHASE → ATTACK (In range:", distance, ")")
+			finish("Attack")
+			return
 
 		# Move toward player
 		boss.velocity.x = boss.direction_to_player.x * boss.movement_speed
 
-        # Stop chasing if too far
-        if distance > boss.max_attack_distance * 2:
-            print("🟢 BOSS STATE: CHASE → IDLE (Too far:", distance, ")")
-            finish("Idle")
+		# Stop chasing if too far
+		if distance > boss.max_attack_distance * 2:
+			print("🟢 BOSS STATE: CHASE → IDLE (Too far:", distance, ")")
+			finish("Idle")
 
 
 class BossAttackState extends State:
@@ -467,11 +478,11 @@ class BossAttackState extends State:
 		boss = state_machine.get_parent() as BossEnemy
 		boss.velocity = Vector2.ZERO
 
-        # Choose and execute attack
-        var attack_type = boss.choose_attack()
-        var attack_names = ["MELEE_SLAM", "RANGED_PROJECTILE", "AREA_SHOCKWAVE", "DASH_ATTACK"]
-        print("🔴 BOSS STATE: Entered ATTACK - Type:", attack_names[attack_type], " Phase:", boss.current_phase + 1)
-        boss.execute_attack(attack_type)
+		# Choose and execute attack
+		var attack_type = boss.choose_attack()
+		var attack_names = ["MELEE_SLAM", "RANGED_PROJECTILE", "AREA_SHOCKWAVE", "DASH_ATTACK"]
+		print("🔴 BOSS STATE: Entered ATTACK - Type:", attack_names[attack_type], " Phase:", boss.current_phase + 1)
+		boss.execute_attack(attack_type)
 
 
 class BossPhaseTransitionState extends State:
