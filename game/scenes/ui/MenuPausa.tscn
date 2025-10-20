@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://23pwwgt8p0kn"]
+
+[ext_resource type="Script" uid="uid://c32lyq4pha4s0" path="res://scenes/ui/menu_pausa.gd" id="1_hjdiv"]
+
+[node name="MenuPausa" type="AcceptDialog"]
+script = ExtResource("1_hjdiv")
+
+[node name="Button" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Back Menu"

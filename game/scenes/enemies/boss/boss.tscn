@@ -1,23 +1,52 @@
-[gd_scene load_steps=4 format=3 uid="uid://cqgnive5h261"]
+[gd_scene load_steps=8 format=3 uid="uid://cqgnive5h261"]
 
 [ext_resource type="Script" uid="uid://dgaoktmqn827t" path="res://scripts/enemies/boss/boss_enemy.gd" id="1_cnur3"]
+[ext_resource type="Texture2D" uid="uid://dtr6wi3x3qruu" path="res://assets/sprites/characters/boss/enojado 1.png" id="2_b7gi3"]
+[ext_resource type="Texture2D" uid="uid://blnsf8kaqmrf8" path="res://assets/sprites/characters/boss/enojado 2.png" id="3_adb2o"]
+[ext_resource type="Texture2D" uid="uid://cwpvypxuq5o80" path="res://assets/sprites/characters/boss/caminando 1.png" id="4_pnkcg"]
+[ext_resource type="Texture2D" uid="uid://vsa16vaoe1am" path="res://assets/sprites/characters/boss/boss caminando 2.png" id="5_iagua"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y2dww"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_b7gi3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_adb2o")
+}],
+"loop": true,
+"name": &"enojado",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_pnkcg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_iagua")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4c6nk"]
-radius = 66.0
-height = 132.0
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_cnur3"]
-size = Vector2(128, 128)
+radius = 47.0
+height = 114.0
 
 [node name="Boss" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 129
 script = ExtResource("1_cnur3")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_y2dww")
+animation = &"enojado"
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_4c6nk")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("PlaceholderTexture2D_cnur3")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=4 uid="uid://c5ayqheupoycf"]
 
-[ext_resource type="Script" uid="uid://6p6sbkrr71qv" path="res://scripts/core/level_manager.gd" id="1_icac2"]
+[ext_resource type="Script" path="res://scripts/core/level_manager.gd" id="1_icac2"]
 [ext_resource type="Texture2D" uid="uid://xn4j7krtxsrp" path="res://assets/sprites/7.png" id="1_u8dug"]
 [ext_resource type="PackedScene" uid="uid://lbyi6msheabi" path="res://scenes/characters/bolon.tscn" id="2_1gno6"]
 [ext_resource type="PackedScene" uid="uid://dttvhmn4q1f5a" path="res://scenes/ui/MobileUI.tscn" id="3_238wg"]
@@ -142,3 +142,9 @@ position = Vector2(1141, 224)
 
 [node name="SpawnPoint" type="Marker2D" parent="."]
 position = Vector2(-119, 236)
+
+[node name="SizePickup8" parent="." instance=ExtResource("4_238wg")]
+position = Vector2(668, 263)
+
+[node name="SizePickup9" parent="." instance=ExtResource("4_238wg")]
+position = Vector2(-68, 253)

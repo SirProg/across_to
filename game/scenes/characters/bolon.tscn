@@ -6,6 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://bv62v22046pj7" path="res://assets/sprites/characters/bolon_character/Bolin_walk_0.png" id="4_m76yi"]
 [ext_resource type="Texture2D" uid="uid://b7f2a3glgfuhu" path="res://assets/sprites/characters/bolon_character/Bolin_walk_1.png" id="5_q1h08"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q1h08"]
+size = Vector2(43, 40)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_46twg"]
 animations = [{
 "frames": [{
@@ -26,9 +29,6 @@ radius = 21.023796
 [sub_resource type="CircleShape2D" id="CircleShape2D_m76yi"]
 radius = 23.086792
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_q1h08"]
-size = Vector2(43, 40)
-
 [node name="Bolon" type="CharacterBody2D"]
 collision_layer = 2
 script = ExtResource("2_xk1c3")
@@ -36,6 +36,13 @@ normal_projectile_scene = ExtResource("2_bisop")
 special_projectile_scene = ExtResource("3_m76yi")
 min_scale = 0.9
 max_scale = 1.5
+
+[node name="MeleeHitbox" type="Area2D" parent="."]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeHitbox"]
+position = Vector2(22, 0)
+shape = SubResource("RectangleShape2D_q1h08")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_46twg")
@@ -50,11 +57,6 @@ shape = SubResource("CircleShape2D_q1h08")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupDetector"]
 shape = SubResource("CircleShape2D_m76yi")
 
-[node name="MeleeHitbox" type="Area2D" parent="."]
-monitoring = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeHitbox"]
-position = Vector2(22, 0)
-shape = SubResource("RectangleShape2D_q1h08")
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]

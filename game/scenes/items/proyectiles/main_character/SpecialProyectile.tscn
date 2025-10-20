@@ -1,19 +1,50 @@
-[gd_scene load_steps=4 format=3 uid="uid://dhqjf7oip84jw"]
+[gd_scene load_steps=8 format=3 uid="uid://dhqjf7oip84jw"]
 
-[ext_resource type="Texture2D" uid="uid://br63wawgx80v" path="res://assets/sprites/items/Group 1.png" id="1_4mimg"]
 [ext_resource type="Script" uid="uid://dqck3y3kox3gp" path="res://scripts/characters/special_proyectile.gd" id="1_j0wwi"]
+[ext_resource type="Texture2D" uid="uid://dgnowt36rbacp" path="res://assets/sprites/items/bullet/pixil-frame-0.png" id="2_2kmll"]
+[ext_resource type="Texture2D" uid="uid://cbr17ss8mwbuf" path="res://assets/sprites/items/bullet/pixil-frame-1.png" id="3_rjevr"]
+[ext_resource type="Texture2D" uid="uid://b2wa23tjiauci" path="res://assets/sprites/items/bullet/pixil-frame-2.png" id="4_ayioe"]
+[ext_resource type="Texture2D" uid="uid://bo4rs0nnkn2kc" path="res://assets/sprites/items/bullet/pixil-frame-3.png" id="5_dj8n7"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_twmtf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_2kmll")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_rjevr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ayioe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_dj8n7")
+}],
+"loop": true,
+"name": &"move",
+"speed": 5.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j0wwi"]
+radius = 7.8151917
+height = 35.46428
 
 [node name="SpecialProyectile" type="Area2D"]
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("1_j0wwi")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 2)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_twmtf")
+animation = &"move"
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 0.5, 0, 1)
-texture = ExtResource("1_4mimg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, -2)
 scale = Vector2(-2.6870742, 0.73313206)
 shape = SubResource("CapsuleShape2D_j0wwi")
