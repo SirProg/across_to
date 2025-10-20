@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dttvhmn4q1f5a"]
+[gd_scene load_steps=14 format=3 uid="uid://dttvhmn4q1f5a"]
 
 [ext_resource type="Texture2D" uid="uid://c4ejxsvv2bfi0" path="res://assets/sprites/ui/controlers/basic/ButtonLeft.png" id="1_cwmqd"]
 [ext_resource type="Script" uid="uid://s4ud8ecir0l0" path="res://scripts/systems/ui/mobile_ui.gd" id="1_mlxy7"]
@@ -9,7 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://btrdhn0ysh6u5" path="res://assets/sprites/ui/controlers/pressed/ButtonJumpPreseed.png" id="6_dlfe5"]
 [ext_resource type="Texture2D" uid="uid://cgkslenkl6g81" path="res://assets/sprites/ui/controlers/basic/ButtonThrow.png" id="7_lftdj"]
 [ext_resource type="Texture2D" uid="uid://454dsmgy56fk" path="res://assets/sprites/ui/controlers/pressed/ButtonThrowPreseed.png" id="8_0itwi"]
-[ext_resource type="Texture2D" uid="uid://lyw816ldk2q7" path="res://assets/sprites/ui/profile/RectangleBox_96x96.png" id="10_osjcv"]
+[ext_resource type="Texture2D" uid="uid://bv62v22046pj7" path="res://assets/sprites/characters/bolon_character/Bolin_walk_0.png" id="10_0tsx2"]
+[ext_resource type="Texture2D" uid="uid://c6w3b48qm8vgn" path="res://assets/sprites/ui/profile/HealthBarPanel_160x41.png" id="11_dlfe5"]
+[ext_resource type="Texture2D" uid="uid://dar3peo4cns6c" path="res://assets/sprites/ui/profile/ValueRed_120x8.png" id="12_lftdj"]
+[ext_resource type="Texture2D" uid="uid://do12q6ainnga" path="res://assets/sprites/ui/profile/ValueBlue_120x8.png" id="13_dlfe5"]
 
 [node name="MobileUi" type="CanvasLayer"]
 script = ExtResource("1_mlxy7")
@@ -47,25 +50,42 @@ scale = Vector2(0.6, 0.6)
 texture_normal = ExtResource("8_0itwi")
 texture_pressed = ExtResource("8_0itwi")
 
-[node name="PlayerDetails" type="CanvasLayer" parent="."]
-
-[node name="PanelContainer" type="PanelContainer" parent="PlayerDetails"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
-[node name="MarginContainer" type="MarginContainer" parent="PlayerDetails/PanelContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/separation = 10
 
-[node name="PanelContainer" type="PanelContainer" parent="PlayerDetails/PanelContainer/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("10_0tsx2")
+expand_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="PlayerDetails/PanelContainer/MarginContainer"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+stretch_margin_left = 10
+stretch_margin_top = 10
+texture_under = ExtResource("11_dlfe5")
+texture_progress = ExtResource("12_lftdj")
+
+[node name="TextureProgressBar2" type="TextureProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture_under = ExtResource("11_dlfe5")
+texture_progress = ExtResource("13_dlfe5")
+
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="PlayerDetails/PanelContainer/MarginContainer/GridContainer"]
-layout_mode = 2
-texture = ExtResource("10_osjcv")
+[node name="TextureProgressBar" type="TextureProgressBar" parent="MarginContainer/HBoxContainer/TextureButton"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
