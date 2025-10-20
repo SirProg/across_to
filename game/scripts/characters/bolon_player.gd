@@ -27,11 +27,12 @@ var base_sprite_scale: Vector2 = Vector2(1, 1)
 var base_collision_size: Vector2
 
 @onready var collision_shape = $CollisionShape2D
-@onready var sprite = $Sprite2D
+@onready var sprite = $AnimatedSprite2D
 
 @onready var melee_hitbox = $MeleeHitbox
 @onready var pickup_detector = $PickupDetector
 
+@onready var animation_player = $AnimatedSprite2D
 
 func _ready():
 	
@@ -94,9 +95,11 @@ func _physics_process(delta: float) -> void:
 
 # --- MOVIMIENTO ---
 func move_left():
+	animation_player.play("walk")
 	move_direction = -1.0
 
 func move_right():
+	animation_player.play("walk")
 	move_direction = 1.0
 
 func stop_horizontal():

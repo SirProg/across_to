@@ -97,7 +97,8 @@ scale = Vector2(4.6232634, 2.9845679)
 texture = ExtResource("1_u8dug")
 
 [node name="Bolon" parent="." instance=ExtResource("2_1gno6")]
-position = Vector2(-122, 235)
+position = Vector2(-132, 245)
+max_scale = 1.8
 
 [node name="SizePickup4" parent="." instance=ExtResource("4_238wg")]
 position = Vector2(441, 263)

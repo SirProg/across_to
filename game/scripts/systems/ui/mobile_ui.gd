@@ -7,6 +7,9 @@ extends CanvasLayer
 @onready var btn_special = $SpecialButton
 @onready var btn_melee = $AttackButton
 
+@onready var health_progress = $MarginContainer/HBoxContainer/VBoxContainer/TextureProgressBar
+@onready var stamina_progress = $MarginContainer/HBoxContainer/VBoxContainer/TextureProgressBar2
+
 func _ready():
 	btn_left.pressed.connect(InputManager.on_move_left_press)
 	btn_left.released.connect(InputManager.on_move_left_release)

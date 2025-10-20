@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjxlcqjif8mx6"
-path="res://.godot/imported/FA_PENGUIN_Jump_UP_004.png-2306edb8d89b181cfb5d91073467201a.ctex"
+uid="uid://b7f2a3glgfuhu"
+path="res://.godot/imported/Bolin_walk_1.png-90714103f3cd18cff46686a4e8f67f0c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/characters/bolon_character/06-Jump/01-Jump_Up/FA_PENGUIN_Jump_UP_004.png"
-dest_files=["res://.godot/imported/FA_PENGUIN_Jump_UP_004.png-2306edb8d89b181cfb5d91073467201a.ctex"]
+source_file="res://assets/sprites/characters/bolon_character/Bolin_walk_1.png"
+dest_files=["res://.godot/imported/Bolin_walk_1.png-90714103f3cd18cff46686a4e8f67f0c.ctex"]
 
 [params]
 
