@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cj6tw5vjgpb21"]
+[gd_scene load_steps=7 format=3 uid="uid://cj6tw5vjgpb21"]
 
 [ext_resource type="Script" uid="uid://0f58vaok5qyv" path="res://scripts/characters/normal_proyectile.gd" id="1_ysqwn"]
 [ext_resource type="Texture2D" uid="uid://dgnowt36rbacp" path="res://assets/sprites/items/bullet/pixil-frame-0.png" id="2_4jhpf"]
 [ext_resource type="Texture2D" uid="uid://cbr17ss8mwbuf" path="res://assets/sprites/items/bullet/pixil-frame-1.png" id="3_veuoi"]
 [ext_resource type="Texture2D" uid="uid://b2wa23tjiauci" path="res://assets/sprites/items/bullet/pixil-frame-2.png" id="4_ukkas"]
-[ext_resource type="Texture2D" uid="uid://bo4rs0nnkn2kc" path="res://assets/sprites/items/bullet/pixil-frame-3.png" id="5_4glvp"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_33xhg"]
 animations = [{
@@ -17,9 +16,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("4_ukkas")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_4glvp")
 }],
 "loop": true,
 "name": &"bullet",

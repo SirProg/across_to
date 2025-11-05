@@ -1,9 +1,26 @@
-[gd_scene load_steps=7 format=3 uid="uid://ds3mebeu2yhwa"]
+[gd_scene load_steps=12 format=3 uid="uid://ds3mebeu2yhwa"]
 
 [ext_resource type="Script" uid="uid://blhfbuqkof1n8" path="res://scripts/systems/ui/main_menu.gd" id="1_2ysvc"]
-[ext_resource type="Texture2D" uid="uid://xn4j7krtxsrp" path="res://assets/sprites/7.png" id="2_xpiny"]
+[ext_resource type="Texture2D" uid="uid://di6q1lsah3vxj" path="res://assets/sprites/ui/backgrounds/Background_game_0000.png" id="2_7mi0g"]
 [ext_resource type="FontFile" uid="uid://dpr7rq0bm6vh8" path="res://assets/fonts/Beholden-Medium.ttf" id="3_bhu4a"]
+[ext_resource type="Texture2D" uid="uid://iqtjb8nj1153" path="res://assets/sprites/ui/backgrounds/Background_game_0009.png" id="3_nqjyj"]
+[ext_resource type="Texture2D" uid="uid://i0voivy8hhy6" path="res://assets/sprites/ui/backgrounds/Background_game_0015.png" id="4_7vr37"]
 [ext_resource type="Texture2D" uid="uid://lyw816ldk2q7" path="res://assets/sprites/ui/profile/RectangleBox_96x96.png" id="4_e2per"]
+[ext_resource type="Texture2D" uid="uid://cslpd5pj6qdov" path="res://assets/sprites/ui/backgrounds/Background_game_0023.png" id="5_kncl5"]
+[ext_resource type="Texture2D" uid="uid://cacqch7ecynmm" path="res://assets/sprites/ui/backgrounds/Background_game_0031.png" id="6_clp4r"]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_ee60a"]
+frames = 5
+speed_scale = 2.5
+frame_0/texture = ExtResource("2_7mi0g")
+frame_1/texture = ExtResource("3_nqjyj")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("4_7vr37")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("5_kncl5")
+frame_3/duration = 1.0
+frame_4/texture = ExtResource("6_clp4r")
+frame_4/duration = 1.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_7mi0g"]
 font = ExtResource("3_bhu4a")
@@ -29,10 +46,13 @@ grow_vertical = 2
 script = ExtResource("1_2ysvc")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 0
-offset_right = 1281.0
-offset_bottom = 722.0
-texture = ExtResource("2_xpiny")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AnimatedTexture_ee60a")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -41,10 +61,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -23.5
-offset_right = 20.0
-offset_bottom = 23.5
+offset_left = -445.5
+offset_top = -131.5
+offset_right = 445.5
+offset_bottom = 131.5
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -56,12 +76,13 @@ theme_override_constants/v_separation = 20
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_bhu4a")
 theme_override_font_sizes/font_size = 50
-text = "Guardians of taste: The Lost Recipes"
+text = "Guardians of Taste: The Lost Recipes"
 label_settings = SubResource("LabelSettings_7mi0g")
 
 [node name="IniciarBoton" type="Button" parent="CenterContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_type_variation = &"FlatButton"
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("3_bhu4a")

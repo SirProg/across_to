@@ -9,6 +9,8 @@ var start_position: Vector2
 var direction: Vector2 = Vector2.RIGHT
 var has_hit: bool = false
 
+@onready var animated_sprite = $AnimatedSprite2D
+
 func _ready():
 	start_position = global_position
 
@@ -25,7 +27,7 @@ func _ready():
 func _process(delta):
 	# Move projectile
 	global_position += direction * speed * delta
-
+	animated_sprite.play("move")
 	# Check distance traveled
 	if global_position.distance_to(start_position) > max_distance:
 		print("⭐⭐ PLAYER SPECIAL: Max distance reached, destroying")
@@ -74,6 +76,15 @@ func _destroy() -> void:
 # Call this when spawning to set custom direction
 func initialize(proj_direction: Vector2, proj_speed: float = speed, proj_damage: int = damage) -> void:
 	direction = proj_direction.normalized()
+	
+	var sprite_animated = get_node("AnimatedSprite2D")
+	
+	if sprite_animated:
+		if direction.x < 0:
+			sprite_animated.flip_h = true
+		else:
+			sprite_animated.flip_h = false
+	
 	speed = proj_speed
 	damage = proj_damage
 	print("⭐⭐ PLAYER SPECIAL: Initialized - Dir:", direction, " Speed:", speed)

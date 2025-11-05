@@ -41,7 +41,7 @@ func _ready():
 		base_collision_size = Vector2(collision_shape.shape.radius, collision_shape.shape.radius)
 	elif collision_shape.shape is CapsuleShape2D:
 		base_collision_size = Vector2(collision_shape.shape.radius * 2, collision_shape.shape.height)
-	
+
 	current_scale = Vector2(1, 1)
 	_apply_scale()
 	sprite.scale = current_scale
@@ -88,7 +88,7 @@ func _physics_process(delta: float) -> void:
 
 	# Movimiento horizontal
 	velocity.x = move_direction * move_speed
-
+	
 	# Cooldowns
 	time_since_shoot += delta
 	time_since_special += delta
@@ -100,10 +100,12 @@ func _physics_process(delta: float) -> void:
 func move_left():
 	animation_player.play("walk")
 	move_direction = -1.0
+	animation_player.flip_h = true
 
 func move_right():
 	animation_player.play("walk")
 	move_direction = 1.0
+	animation_player.flip_h = false
 
 func stop_horizontal():
 	move_direction = 0.0
@@ -132,9 +134,11 @@ func shoot_normal():
 	var proj = normal_projectile_scene.instantiate()
 
 	# Determine direction based on player facing
-	var shoot_direction = Vector2.RIGHT if move_direction >= 0 else Vector2.LEFT
-	var offset_x = 30 if move_direction >= 0 else -30
-
+	var is_facing_left = sprite.flip_h
+	var shoot_direction = Vector2.LEFT if is_facing_left else Vector2.RIGHT
+	var offset_x = -30 if is_facing_left else 30
+	
+	
 	# Calculate spawn position
 	var spawn_pos = global_position + Vector2(offset_x, 0)
 
@@ -182,8 +186,9 @@ func use_special():
 	var proj = special_projectile_scene.instantiate()
 
 	# Determine direction based on player facing
-	var shoot_direction = Vector2.RIGHT if move_direction >= 0 else Vector2.LEFT
-	var offset_x = 40 if move_direction >= 0 else -40
+	var is_facing_left = sprite.flip_h
+	var shoot_direction = Vector2.LEFT if is_facing_left else Vector2.RIGHT
+	var offset_x = -40 if is_facing_left else 40
 
 	# Calculate spawn position
 	var spawn_pos = global_position + Vector2(offset_x, 0)

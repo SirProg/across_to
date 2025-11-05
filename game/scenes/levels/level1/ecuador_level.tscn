@@ -99,7 +99,7 @@ camera = NodePath("Bolon/Camera2D")
 spawn_point = NodePath("SpawnPoint")
 
 [node name="Enviroment" type="Sprite2D" parent="."]
-position = Vector2(524.4998, 279.5)
+position = Vector2(536, 282.99997)
 scale = Vector2(4.6232634, 2.9845679)
 texture = ExtResource("1_u8dug")
 
