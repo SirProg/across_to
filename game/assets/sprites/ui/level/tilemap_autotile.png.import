@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ce13si36py2we"
-path="res://.godot/imported/Plataformpack-byArpion.png-d5c657173c3a8a9ae5d4a352407cf2b0.ctex"
+uid="uid://bb5scldwwsepy"
+path="res://.godot/imported/tilemap_autotile.png-e0412c29180fc5e73fbb06053c1a8865.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/Plataformpack-byArpion.png"
-dest_files=["res://.godot/imported/Plataformpack-byArpion.png-d5c657173c3a8a9ae5d4a352407cf2b0.ctex"]
+source_file="res://assets/sprites/ui/level/tilemap_autotile.png"
+dest_files=["res://.godot/imported/tilemap_autotile.png-e0412c29180fc5e73fbb06053c1a8865.ctex"]
 
 [params]
 

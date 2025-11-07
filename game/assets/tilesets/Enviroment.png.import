@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtueskafcksl0"
-path="res://.godot/imported/spritesheet.png-6ab3a657de8de5525b16b56cb69e0ef5.ctex"
+uid="uid://bmmry65pmy46v"
+path="res://.godot/imported/Enviroment.png-465ffec1b4a1bf779c64a41608f0bfa4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/enemies/Papita/spritesheet.png"
-dest_files=["res://.godot/imported/spritesheet.png-6ab3a657de8de5525b16b56cb69e0ef5.ctex"]
+source_file="res://assets/tilesets/Enviroment.png"
+dest_files=["res://.godot/imported/Enviroment.png-465ffec1b4a1bf779c64a41608f0bfa4.ctex"]
 
 [params]
 

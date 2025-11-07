@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cqgnive5h261"]
+[gd_scene load_steps=7 format=3 uid="uid://cqgnive5h261"]
 
 [ext_resource type="Script" uid="uid://dgaoktmqn827t" path="res://scripts/enemies/boss/boss_enemy.gd" id="1_cnur3"]
 [ext_resource type="Texture2D" uid="uid://dtr6wi3x3qruu" path="res://assets/sprites/characters/boss/enojado 1.png" id="2_b7gi3"]
@@ -31,10 +31,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4c6nk"]
-radius = 47.0
-height = 114.0
-
 [node name="Boss" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 129
@@ -44,8 +40,8 @@ script = ExtResource("1_cnur3")
 sprite_frames = SubResource("SpriteFrames_y2dww")
 animation = &"enojado"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_4c6nk")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, -42, 51, -35, 31, 53, -31, 53, -48, -36)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 

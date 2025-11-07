@@ -4,6 +4,7 @@ extends CharacterBody2D
 # --- EXPORTS (ajustables en el inspector) ---
 @export var move_speed: float = 200.0
 @export var jump_velocity: float = -400.0
+@export var run_speed: float = 350.0
 @export var normal_projectile_scene: PackedScene
 @export var special_projectile_scene: PackedScene
 
@@ -32,8 +33,6 @@ var base_collision_size: Vector2
 @onready var melee_hitbox = $MeleeHitbox
 @onready var pickup_detector = $PickupDetector
 
-@onready var animation_player = $AnimatedSprite2D
-
 func _ready():
 	if collision_shape.shape is RectangleShape2D:
 		base_collision_size = collision_shape.shape.size
@@ -46,14 +45,16 @@ func _ready():
 	_apply_scale()
 	sprite.scale = current_scale
 	melee_hitbox.monitoring = false
-	InputManager.move_left_pressed.connect(move_left)
-	InputManager.move_left_released.connect(stop_horizontal)
-	InputManager.move_right_pressed.connect(move_right)
-	InputManager.move_right_released.connect(stop_horizontal)
-	InputManager.jump_requested.connect(jump)
-	InputManager.shoot_requested.connect(shoot_normal)
-	InputManager.melee_requested.connect(attack_melee)
-	InputManager.special_requested.connect(use_special)
+	
+		
+	#InputManager.move_left_pressed.connect(move_left)
+	#InputManager.move_left_released.connect(stop_horizontal)
+	#InputManager.move_right_pressed.connect(move_right)
+	#InputManager.move_right_released.connect(stop_horizontal)
+	#InputManager.jump_requested.connect(jump)
+	#InputManager.shoot_requested.connect(shoot_normal)
+	#InputManager.melee_requested.connect(attack_melee)
+	#InputManager.special_requested.connect(use_special)
 
 	print("🔵 PLAYER: Initialized at position:", global_position)
 
@@ -85,9 +86,28 @@ func _physics_process(delta: float) -> void:
 	# Gravedad
 	if not is_on_floor():
 		velocity.y += get_gravity().y * delta
-
+	
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		velocity.y = jump_velocity
+		
+	# ----- Move ------
+	var direction = Input.get_axis("move_left", "move_right")
+	var is_running := Input.is_action_pressed("run")
+	var current_speed := run_speed if is_running else move_speed
+	if direction:
+		velocity.x = direction * current_speed
+	else:
+		velocity.x = move_toward(velocity.x, 0, current_speed)
+	
+	# ----- Run -----
+	if Input.is_action_pressed("melee_attack"):
+		attack_melee()
+	elif Input.is_action_pressed("shoot"):
+		shoot_normal()
+	elif Input.is_action_pressed("special_shoot"):
+		use_special()
 	# Movimiento horizontal
-	velocity.x = move_direction * move_speed
+	#velocity.x = move_direction * move_speed
 	
 	# Cooldowns
 	time_since_shoot += delta
@@ -95,18 +115,32 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	sprite.scale = current_scale
-
+	if direction == 1:
+		sprite.flip_h = false
+	elif direction == -1:
+		sprite.flip_h = true
+		
+	animation(direction)
+	
+func animation(direction):
+	if is_on_floor():
+		if direction == 0 :
+			print("idle") 
+		else:
+			sprite.play("walk")
+		
+	
 # --- MOVIMIENTO ---
 func move_left():
-	animation_player.play("walk")
+	#animation_player.play("walk")
 	move_direction = -1.0
-	animation_player.flip_h = true
+	#animation_player.flip_h = true
 
 func move_right():
-	animation_player.play("walk")
+	#animation_player.play("walk")
 	move_direction = 1.0
-	animation_player.flip_h = false
-
+	#animation_player.flip_h = false
+	
 func stop_horizontal():
 	move_direction = 0.0
 
@@ -114,6 +148,8 @@ func stop_horizontal():
 func jump():
 	if is_on_floor():
 		velocity.y = jump_velocity
+
+#----------------------------------
 
 # --- DISPARO NORMAL ---
 func shoot_normal():
