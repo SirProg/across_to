@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cslfo6guw6p8a"
-path="res://.godot/imported/TileMap.png-0cf1a54bcb462bcf4183693cb04a6fce.ctex"
+uid="uid://d3ua3yhp7h2jv"
+path="res://.godot/imported/bolon_meele2.png-4f31432ff559766b2f588003f95c6318.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/predeterminado/TileMap/TileMap.png"
-dest_files=["res://.godot/imported/TileMap.png-0cf1a54bcb462bcf4183693cb04a6fce.ctex"]
+source_file="res://assets/sprites/characters/bolon_character/meele/bolon_meele2.png"
+dest_files=["res://.godot/imported/bolon_meele2.png-4f31432ff559766b2f588003f95c6318.ctex"]
 
 [params]
 

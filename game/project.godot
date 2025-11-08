@@ -32,6 +32,10 @@ window/handheld/orientation=4
 
 enabled=PackedStringArray("res://addons/virtual_joystick/plugin.cfg")
 
+[global_group]
+
+Player=""
+
 [input]
 
 move_left={

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7tqsjmjun47d"
-path="res://.godot/imported/Dead-wood.png-3d552af2bea09353d5b23bd7c8667086.ctex"
+uid="uid://lan276xqnpxn"
+path="res://.godot/imported/bolon_meele3.png-834ea7f57f1cb31490c2a4af7c5bd8bc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/predeterminado/Plants/Dead-wood.png"
-dest_files=["res://.godot/imported/Dead-wood.png-3d552af2bea09353d5b23bd7c8667086.ctex"]
+source_file="res://assets/sprites/characters/bolon_character/meele/bolon_meele3.png"
+dest_files=["res://.godot/imported/bolon_meele3.png-834ea7f57f1cb31490c2a4af7c5bd8bc.ctex"]
 
 [params]
 

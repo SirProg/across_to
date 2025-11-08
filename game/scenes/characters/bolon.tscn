@@ -1,10 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://lbyi6msheabi"]
+[gd_scene load_steps=13 format=3 uid="uid://lbyi6msheabi"]
 
 [ext_resource type="PackedScene" uid="uid://cj6tw5vjgpb21" path="res://scenes/items/proyectiles/main_character/NormalProyectile.tscn" id="2_bisop"]
 [ext_resource type="Script" uid="uid://bt7frq0v3urv" path="res://scripts/characters/bolon_player.gd" id="2_xk1c3"]
 [ext_resource type="PackedScene" uid="uid://dhqjf7oip84jw" path="res://scenes/items/proyectiles/main_character/SpecialProyectile.tscn" id="3_m76yi"]
 [ext_resource type="Texture2D" uid="uid://bv62v22046pj7" path="res://assets/sprites/characters/bolon_character/Bolin_walk_0.png" id="4_m76yi"]
 [ext_resource type="Texture2D" uid="uid://b7f2a3glgfuhu" path="res://assets/sprites/characters/bolon_character/Bolin_walk_1.png" id="5_q1h08"]
+[ext_resource type="Texture2D" uid="uid://dlss38hnh51dg" path="res://assets/sprites/characters/bolon_character/meele/bolon_meele1.png" id="6_8ceqf"]
+[ext_resource type="Texture2D" uid="uid://d3ua3yhp7h2jv" path="res://assets/sprites/characters/bolon_character/meele/bolon_meele2.png" id="7_h8l81"]
+[ext_resource type="Texture2D" uid="uid://lan276xqnpxn" path="res://assets/sprites/characters/bolon_character/meele/bolon_meele3.png" id="8_vw43i"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_46twg"]
 animations = [{
@@ -27,7 +30,24 @@ height = 40.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q1h08"]
 size = Vector2(31.5, 41)
 
-[node name="Bolon" type="CharacterBody2D"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_uliay"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_8ceqf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_h8l81")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_vw43i")
+}],
+"loop": true,
+"name": &"meele",
+"speed": 5.0
+}]
+
+[node name="Bolon" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("2_xk1c3")
@@ -51,6 +71,15 @@ monitoring = false
 position = Vector2(16.25, -0.5)
 shape = SubResource("RectangleShape2D_q1h08")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MeleeHitbox"]
+visible = false
+position = Vector2(21, -1.1920929e-07)
+scale = Vector2(0.24062502, 0.24062502)
+sprite_frames = SubResource("SpriteFrames_uliay")
+animation = &"meele"
+frame = 1
+frame_progress = 0.9186078
+
 [node name="PickupDetector" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupDetector"]
@@ -59,6 +88,10 @@ shape = SubResource("CapsuleShape2D_46twg")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(1.5, 1.5)
+limit_left = -770
+limit_top = -1000
+limit_right = 2558
+limit_bottom = 1182
 position_smoothing_enabled = true
 drag_horizontal_enabled = true
 drag_left_margin = 0.1

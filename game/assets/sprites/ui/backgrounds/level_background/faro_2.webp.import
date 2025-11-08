@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8f8pqlso3h54"
-path="res://.godot/imported/Plant_1.png-af5dd16a9e92e483227f873e4b6e98ea.ctex"
+uid="uid://tbv2gpxij25s"
+path="res://.godot/imported/faro_2.webp-91fd88e1836c4ed1178d0d609a47768e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/predeterminado/Plants/Plant_1.png"
-dest_files=["res://.godot/imported/Plant_1.png-af5dd16a9e92e483227f873e4b6e98ea.ctex"]
+source_file="res://assets/sprites/ui/backgrounds/level_background/faro_2.webp"
+dest_files=["res://.godot/imported/faro_2.webp-91fd88e1836c4ed1178d0d609a47768e.ctex"]
 
 [params]
 

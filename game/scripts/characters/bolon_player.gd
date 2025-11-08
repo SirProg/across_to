@@ -2,6 +2,10 @@
 extends CharacterBody2D
 
 # --- EXPORTS (ajustables en el inspector) ---
+# Life
+@export var life: float = 200.0
+@export var life_max: float = 200.0
+
 @export var move_speed: float = 200.0
 @export var jump_velocity: float = -400.0
 @export var run_speed: float = 350.0
@@ -18,11 +22,15 @@ extends CharacterBody2D
 @export var min_scale: float = 0.7
 @export var max_scale: float = 2.0
 
+# Limite de caida
+@export var reset_if_y_greater_than: float = 1182.0  # si cae muy abajo
+
 # --- Estado interno ---
 var move_direction: float = 0.0
 var time_since_shoot: float = 0.0
 var time_since_special: float = 0.0
 var current_scale: Vector2 = Vector2(1, 1)
+var start_position: Vector2 = Vector2(-40, 600)
 
 var base_sprite_scale: Vector2 = Vector2(1, 1)
 var base_collision_size: Vector2
@@ -40,7 +48,9 @@ func _ready():
 		base_collision_size = Vector2(collision_shape.shape.radius, collision_shape.shape.radius)
 	elif collision_shape.shape is CapsuleShape2D:
 		base_collision_size = Vector2(collision_shape.shape.radius * 2, collision_shape.shape.height)
-
+	#Start in (-40,600)
+	global_position = start_position
+	add_to_group("Player")
 	current_scale = Vector2(1, 1)
 	_apply_scale()
 	sprite.scale = current_scale
@@ -112,9 +122,9 @@ func _physics_process(delta: float) -> void:
 	# Cooldowns
 	time_since_shoot += delta
 	time_since_special += delta
-
+	_check_reset_bounds()
 	move_and_slide()
-	sprite.scale = current_scale
+
 	if direction == 1:
 		sprite.flip_h = false
 	elif direction == -1:
@@ -129,7 +139,12 @@ func animation(direction):
 		else:
 			sprite.play("walk")
 		
-	
+func _check_reset_bounds():
+	var pos = global_position
+	if (pos.y > reset_if_y_greater_than):
+		global_position = start_position
+		velocity = Vector2.ZERO
+		print("🔴 Retornando a la posicion inicial: ", global_position, "posicion en y: ", pos.y)
 # --- MOVIMIENTO ---
 func move_left():
 	#animation_player.play("walk")
@@ -163,7 +178,9 @@ func shoot_normal():
 	if current_scale.x <= min_scale:
 		print("🔵 PLAYER: Too small to shoot")
 		return
-
+	if life <= 20:
+		print("🔵 PLAYER: Not enough life to shoot (need > 20)")
+	
 	print("🔵 PLAYER: Shooting normal projectile...")
 
 	# Instantiate projectile
@@ -190,7 +207,12 @@ func shoot_normal():
 	get_parent().add_child(proj)
 
 	print("🔵 PLAYER: Projectile spawned at", proj.global_position, " Direction:", shoot_direction)
-
+	
+	# Reducir vida al disparar (proporcional al daño de tamaño)
+	var size_loss_percent = 1.0 - normal_size_loss  # Ej: 0.03 = 3%
+	var life_loss = life * size_loss_percent
+	life = max(0, life - life_loss)
+	
 	_reduce_size(normal_size_loss)
 	time_since_shoot = 0.0
 
@@ -215,7 +237,9 @@ func use_special():
 	if current_scale.x <= min_scale:
 		print("🔵 PLAYER: Too small to use special")
 		return
-
+	if life <= 20:
+		print("🔵 PLAYER: Not enough life to use special (need > 20)")
+		return
 	print("🔵 PLAYER: ⚡ Using SPECIAL attack!")
 
 	# Instantiate projectile
@@ -241,7 +265,12 @@ func use_special():
 	get_parent().add_child(proj)
 
 	print("🔵 PLAYER: Special spawned at", proj.global_position, " Direction:", shoot_direction)
-
+	
+	# Reducir vida al usar especial
+	var size_loss_percent = 1.0 - special_size_loss  # Ej: 0.06 = 6%
+	var life_loss = life * size_loss_percent
+	life = max(0, life - life_loss)
+	
 	_reduce_size(special_size_loss)
 	time_since_special = 0.0
 
@@ -252,6 +281,7 @@ func _reduce_size(factor: float):
 		Vector2(min_scale, min_scale),
 		Vector2(max_scale, max_scale)
 	)
+	_apply_scale()
 
 # --- RECOLECCIÓN DE PICKUP (¡aquí está la magia!) ---
 func _on_PickupDetector_area_entered():
@@ -260,8 +290,19 @@ func _on_PickupDetector_area_entered():
 		Vector2(min_scale, min_scale),
 		Vector2(max_scale, max_scale)
 	)
+	
+	# Aumentar vida proporcionalmente al aumento de tamaño
+	var size_gain_percent = size_gain_per_pickup - 1.0  # Ej: 0.1 = 10%
+	var life_gain = life * size_gain_percent
+	life = min(life_max, life + life_gain)  # 200.0 es tu vida máxima
+	
 	_apply_scale()
 	
+func _on_SpecialPickupDetector_area_entered():
+	print("🟢 Objeto especial recolectado")
+	
+func get_damage() -> int:
+	return 25 
 
 # --- DAMAGE HANDLING ---
 func take_damage(damage: int, source_position: Vector2 = Vector2.ZERO) -> void:
@@ -281,14 +322,17 @@ func take_damage(damage: int, source_position: Vector2 = Vector2.ZERO) -> void:
 		Vector2(min_scale, min_scale),
 		Vector2(max_scale, max_scale)
 	)
-	sprite.scale = current_scale
-
+	_apply_scale()
+	
+	# También reducir vida al recibir daño
+	life = max(0, life - damage)
+	
 	var new_scale = current_scale.x
-	print("🔵 PLAYER: Size changed:", old_scale, "→", new_scale)
+	print("🔵 PLAYER: Size changed:", old_scale, "→", new_scale, " | Life:", life)
 
-	# Check if player is too small (death condition)
-	if current_scale.x <= min_scale:
-		print("🔵 PLAYER: ☠️ DIED! Size reached minimum")
+	# Chequear muerte por escala o vida
+	if current_scale.x <= min_scale or life <= 0:
+		print("🔵 PLAYER: ☠️ DIED! (Scale:", current_scale.x, "Life:", life, ")")
 		SignalBus.player_died.emit()
 
 	# Emit damage signal

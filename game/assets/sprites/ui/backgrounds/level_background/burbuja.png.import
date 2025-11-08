@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c2h8w78ko54em"
-path="res://.godot/imported/Rock (Small).png-ab0933b25f9e0915dd770b019f82c3fc.ctex"
+uid="uid://6ngco58ky5f"
+path="res://.godot/imported/burbuja.png-9538605f8a23e3af998d15f6fabcbb39.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/predeterminado/Rock/Rock (Small).png"
-dest_files=["res://.godot/imported/Rock (Small).png-ab0933b25f9e0915dd770b019f82c3fc.ctex"]
+source_file="res://assets/sprites/ui/backgrounds/level_background/burbuja.png"
+dest_files=["res://.godot/imported/burbuja.png-9538605f8a23e3af998d15f6fabcbb39.ctex"]
 
 [params]
 

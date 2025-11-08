@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d0cufbktqry63"
-path="res://.godot/imported/Weed.png-6574a263b988fad1d343fb252e2f5f95.ctex"
+uid="uid://dlss38hnh51dg"
+path="res://.godot/imported/bolon_meele1.png-be07d43cc6f1e62b1b283a9b0fbd6f16.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/predeterminado/Grass/Weed.png"
-dest_files=["res://.godot/imported/Weed.png-6574a263b988fad1d343fb252e2f5f95.ctex"]
+source_file="res://assets/sprites/characters/bolon_character/meele/bolon_meele1.png"
+dest_files=["res://.godot/imported/bolon_meele1.png-be07d43cc6f1e62b1b283a9b0fbd6f16.ctex"]
 
 [params]
 

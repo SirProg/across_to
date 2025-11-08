@@ -18,7 +18,7 @@ var current_anim = "" # Almacena la animación actual
 @onready var as_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var rc_right: RayCast2D = $RayCastRight
 @onready var rc_left: RayCast2D = $RayCastLeft
-@onready var player = get_tree().get_first_node_in_group("Player") 
+@onready var player = get_tree().get_first_node_in_group("Player")
 
 func _ready():
 	# Inicialización de la "tontería" del enemigo

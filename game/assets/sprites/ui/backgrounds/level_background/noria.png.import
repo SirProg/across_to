@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxol3ykkg74b1"
-path="res://.godot/imported/Flower.png-6f79ce7f0173276008b38bb525d44bec.ctex"
+uid="uid://c8vaanh2ls12d"
+path="res://.godot/imported/noria.png-6c123f78d4061f7e853d75cae711577d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/predeterminado/Plants/Flower.png"
-dest_files=["res://.godot/imported/Flower.png-6f79ce7f0173276008b38bb525d44bec.ctex"]
+source_file="res://assets/sprites/ui/backgrounds/level_background/noria.png"
+dest_files=["res://.godot/imported/noria.png-6c123f78d4061f7e853d75cae711577d.ctex"]
 
 [params]
 

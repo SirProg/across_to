@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bv42syvfahu0w"
-path="res://.godot/imported/Vine.png-64b744b6d3a6bc35f5e8ccfb85c3408e.ctex"
+uid="uid://bwv0u4iineuuo"
+path="res://.godot/imported/faro_3.webp-e1d2a0b04b21353f647533ea7881e72c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/predeterminado/Plants/Vine.png"
-dest_files=["res://.godot/imported/Vine.png-64b744b6d3a6bc35f5e8ccfb85c3408e.ctex"]
+source_file="res://assets/sprites/ui/backgrounds/level_background/faro_3.webp"
+dest_files=["res://.godot/imported/faro_3.webp-e1d2a0b04b21353f647533ea7881e72c.ctex"]
 
 [params]
 

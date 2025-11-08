@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6hfkw3jjk6iv"]
+
+[ext_resource type="Script" uid="uid://cl1mbyx123pgd" path="res://scripts/utils/special_pickup.gd" id="1_bxvkg"]
+[ext_resource type="Texture2D" uid="uid://6ngco58ky5f" path="res://assets/sprites/ui/backgrounds/level_background/burbuja.png" id="2_dkta1"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tsu4j"]
+radius = 22.0
+height = 44.0
+
+[node name="SpecialPickup" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_bxvkg")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_dkta1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -4)
+shape = SubResource("CapsuleShape2D_tsu4j")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

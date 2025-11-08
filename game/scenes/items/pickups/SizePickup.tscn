@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://uvmm2ci83c1t"]
 
 [ext_resource type="Script" uid="uid://cipsorpl58s1j" path="res://scripts/utils/size_pickup.gd" id="1_nfa31"]
-[ext_resource type="Texture2D" uid="uid://b8t36v1ae1tdf" path="res://assets/sprites/items/macita_verde.png" id="2_pqga5"]
+[ext_resource type="Texture2D" uid="uid://6ngco58ky5f" path="res://assets/sprites/ui/backgrounds/level_background/burbuja.png" id="2_nfa31"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fnvpt"]
-radius = 12.0
+radius = 20.0
 height = 40.0
 
 [node name="SizePickup" type="Area2D" groups=["size_pickup"]]
@@ -12,9 +12,11 @@ collision_mask = 2
 script = ExtResource("1_nfa31")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_pqga5")
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_nfa31")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -4)
 shape = SubResource("CapsuleShape2D_fnvpt")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

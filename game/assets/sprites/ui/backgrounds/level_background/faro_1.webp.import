@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cnuisgmtfbxwe"
-path="res://.godot/imported/Rock (Big).png-5a4bdd2bcde5d89b76d056352d286967.ctex"
+uid="uid://dcske5d58ye62"
+path="res://.godot/imported/faro_1.webp-46f2e3e17c0efcc2f1291ff9df8660a5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/predeterminado/Rock/Rock (Big).png"
-dest_files=["res://.godot/imported/Rock (Big).png-5a4bdd2bcde5d89b76d056352d286967.ctex"]
+source_file="res://assets/sprites/ui/backgrounds/level_background/faro_1.webp"
+dest_files=["res://.godot/imported/faro_1.webp-46f2e3e17c0efcc2f1291ff9df8660a5.ctex"]
 
 [params]
 
