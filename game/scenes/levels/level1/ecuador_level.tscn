@@ -2621,6 +2621,7 @@ position = Vector2(2133, -380)
 position = Vector2(-230, 136)
 
 [node name="MobileUi" parent="." instance=ExtResource("3_238wg")]
+visible = false
 
 [node name="Boss" parent="." instance=ExtResource("6_se4ta")]
 position = Vector2(927, -665)
